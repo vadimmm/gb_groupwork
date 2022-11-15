@@ -1,4 +1,4 @@
-from phonebook import view
+from phonebook import views
 
 
 class People:
@@ -36,7 +36,7 @@ class CLI_PhoneBook():
     #     return self.
 
     def menu_main(self):
-        view.showinfo(f'Выберите действие:\n'
+        views.showinfo(f'Выберите действие:\n'
                       f'1 - Отобразить все данные\n'
                       f'2 - Найти запись в справочнике\n'
                       f'3 - Добавить запись\n'
@@ -44,14 +44,14 @@ class CLI_PhoneBook():
                       f'0 - ВЕРНУТЬСЯ НАЗАД\n')
 
     def menu_person(self):
-        view.showinfo(f'Выберите действие:\n'
+        views.showinfo(f'Выберите действие:\n'
                       f'1 - Изменить поле:\n'
                       f'2 - Удалить запись\n'
                       f'0 - ВЕРНУТЬСЯ НАЗАД\n')
 
     def menu_edit_field(self):
-        view.showinfo('КАКОЕ ПОЛЕ ИЗМЕНИТЬ В КОНТАКТЕ?\n')
-        view.showinfo(f'Выберите действие:\n'
+        views.showinfo('КАКОЕ ПОЛЕ ИЗМЕНИТЬ В КОНТАКТЕ?\n')
+        views.showinfo(f'Выберите действие:\n'
                       f'1 - Имя\n'
                       f'2 - Фамилия\n'
                       f'3 - Отчество\n'
@@ -64,7 +64,7 @@ class CLI_PhoneBook():
                       f'0 - ВЕРНУТЬСЯ НАЗАД\n')
 
     def menu_edit_group_field(self):
-        view.showinfo(f'Выберите группу из списка:\n'
+        views.showinfo(f'Выберите группу из списка:\n'
                       f'1 - Семья\n'
                       f'2 - Работа\n'
                       f'3 - Друзья\n'
@@ -72,7 +72,7 @@ class CLI_PhoneBook():
 
     def menu_export(self):
         # param_dict = [{1: }]
-        view.showinfo(f'Выберите действие:\n'
+        views.showinfo(f'Выберите действие:\n'
                       f'1 - в SCV\n'
                       f'2 - в JSON\n'
                       f'3 - в SQLite\n'
