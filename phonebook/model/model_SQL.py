@@ -4,6 +4,7 @@ import sqlalchemy as db
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+import view
 
 ### Создание базы данных
 metadata = db.MetaData()
@@ -83,15 +84,30 @@ def show_SQL_PhoneBook_all():
         print(result)
 
 
-def get_SQL_FoundContact():
-    foun = input('Запрос: ')
-    # q = session.query(PhoneBook).filter(PhoneBook.first_name == foun)
-    q = session.query(PhoneBook).filter(id != 2)
-    print(session.query(q.exists()))
+
+def get_SQL_FoundContact_first_name():
+    field = view.inputStr('Введи')
+    responses = session.query(PhoneBook).filter(PhoneBook.first_name == field).all()
+    for result in responses:
+        print(result)
+
+def get_SQL_FoundContact_last_name():
+    field = view.inputStr('Введи')
+    responses = session.query(PhoneBook).filter(PhoneBook.last_name == field).all()
+    for result in responses:
+        print(result)
+
+def get_SQL_FoundContact_phone_person():
+    field = view.inputStr('Введи')
+    responses = session.query(PhoneBook).filter(PhoneBook.phone_person == field).all()
+    for result in responses:
+        print(result)
 
 
 show_SQL_PhoneBook_all()
-get_SQL_FoundContact()
+get_SQL_FoundContact_first_name()
+get_SQL_FoundContact_last_name()
+get_SQL_FoundContact_phone_person()
 
 
 
