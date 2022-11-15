@@ -88,25 +88,34 @@ def show_SQL_PhoneBook_all():
 def get_SQL_FoundContact_first_name():
     field = view.inputStr('Введи')
     responses = session.query(PhoneBook).filter(PhoneBook.first_name == field).all()
-    for result in responses:
-        print(result)
+    if responses == []:
+        view.inputStr(f'Контакт с именем "{field}" не найден')
+    else:
+        for result in responses:
+            print(result)
 
 def get_SQL_FoundContact_last_name():
     field = view.inputStr('Введи')
     responses = session.query(PhoneBook).filter(PhoneBook.last_name == field).all()
-    for result in responses:
-        print(result)
+    if responses == []:
+        view.inputStr(f'Контакт с фамилией "{field}" не найден')
+    else:
+        for result in responses:
+            print(result)
 
 def get_SQL_FoundContact_phone_person():
-    field = view.inputStr('Введи')
+    field = view.inputStr('Введите номер телефона: ')
     responses = session.query(PhoneBook).filter(PhoneBook.phone_person == field).all()
-    for result in responses:
-        print(result)
+    if responses == []:
+        view.inputStr(f'Контакт с таким номером "{field}" не найден')
+    else:
+        for result in responses:
+            print(result)
 
 
 show_SQL_PhoneBook_all()
-get_SQL_FoundContact_first_name()
-get_SQL_FoundContact_last_name()
+# get_SQL_FoundContact_first_name()
+# get_SQL_FoundContact_last_name()
 get_SQL_FoundContact_phone_person()
 
 
