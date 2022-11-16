@@ -1,9 +1,8 @@
-from sqlalchemy import Column, Integer, String, Date, Table, select, delete
+from sqlalchemy import Column, Integer, String, Date, Table, select
 import sqlalchemy as db
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from phonebook.views import view_cli
-import view
+from phonebook import view
 import os
 
 DB_SQL_NAME = 'sqlite'
