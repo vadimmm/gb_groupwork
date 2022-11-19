@@ -2,10 +2,10 @@ from sqlalchemy import Column, Integer, String, Date, Table, select
 import sqlalchemy as db
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from gb_groupwork.phonebook import view
 import os
 from gb_groupwork.phonebook import views
-from pickupMVC import view
+from gb_groupwork.phonebook import view
+
 
 
 DB_SQL_NAME = 'sqlite'
