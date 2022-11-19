@@ -1,6 +1,7 @@
 import controller
 
 def startProgram():
-    controller.start()
+    # controller.start()
+    controller.init()
 
 startProgram()

@@ -1,6 +1,6 @@
 import json
 from sqlalchemy.ext.declarative import DeclarativeMeta
-from pickupMVC.models import model_SQL
+# from pickupMVC.models import model_SQL
 
 
 class AlchemyEncoder(json.JSONEncoder):
@@ -22,5 +22,5 @@ class AlchemyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-c = model_SQL.PhoneBook()
-print(json.dumps(c, cls=AlchemyEncoder))
+# c = model_SQL.PhoneBook()
+# print(json.dumps(c, cls=AlchemyEncoder))

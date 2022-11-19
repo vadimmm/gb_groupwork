@@ -9,8 +9,8 @@ from gb_groupwork.phonebook import view
 
 
 DB_SQL_NAME = 'sqlite'
-DB_SQL_PATH = '../../gb_groupwork/phonebook/DATA/'
-DB_SQL_PATH_FULL = DB_SQL_PATH + DB_SQL_NAME + '.sqlite'
+DB_PATH = '../../gb_groupwork/phonebook/DATA/'
+DB_SQL_PATH_FULL = DB_PATH + DB_SQL_NAME + '.sqlite'
 
 engine = db.create_engine('sqlite:///' + DB_SQL_PATH_FULL, echo=False)
 
@@ -80,45 +80,6 @@ class PhoneBook(Base):
                f'{self.group} ' \
                f'{self.city} '
 
-
-def set_SQL_NewContact():
-    views.ShowInfo('Введите имя контакта: ')
-    get_first_name = views.getString()
-    views.ShowInfo('Введите фамилию контакта: ')
-    get_last_name = views.getString()
-    views.ShowInfo('Введите отчество контакта: ')
-    get_patronymic = views.getString()
-    views.ShowInfo('Введите дату ДР контакта: ')
-    get_birthday = views.getString()
-    views.ShowInfo('Введите мобильный телефон контакта: ')
-    get_phone_person = views.getString()
-    views.ShowInfo('Введите рабочий телефон контакта: ')
-    get_phone_work = views.getString()
-    views.ShowInfo('Введите email контакта: ')
-    get_email = views.getString()
-    views.ShowInfo('Введите группу контакта: ')
-    get_group = views.getString()
-    views.ShowInfo('Введите город контакта: ')
-    get_city = views.getString()
-
-    with sql.engine.connect() as conn:
-        result = conn.execute(
-            sql.insert(sql.table_phonebook),
-            [
-                {'first_name': get_first_name,
-                 'last_name': get_last_name,
-                 'patronymic': get_patronymic,
-                 # 'birthday': get_birthday,
-                 'phone_person': get_phone_person,
-                 'phone_work': get_phone_work,
-                 'email': get_email,
-                 'group': get_group,
-                 'city': get_city,
-                 },
-            ],
-        )
-        sql.connection.close()
-
 def show_SQL_Column():
     with connection as conn:
         result = conn.execute(
@@ -174,6 +135,44 @@ def get_SQL_FoundContactBy_phone_person():
         for result in responses:
             print(result)
 
+def set_SQL_NewContact():
+    pass
+    # views.ShowInfo('Введите имя контакта: ')
+    # get_first_name = views.getString()
+    # views.ShowInfo('Введите фамилию контакта: ')
+    # get_last_name = views.getString()
+    # views.ShowInfo('Введите отчество контакта: ')
+    # get_patronymic = views.getString()
+    # views.ShowInfo('Введите дату ДР контакта: ')
+    # get_birthday = views.getString()
+    # views.ShowInfo('Введите мобильный телефон контакта: ')
+    # get_phone_person = views.getString()
+    # views.ShowInfo('Введите рабочий телефон контакта: ')
+    # get_phone_work = views.getString()
+    # views.ShowInfo('Введите email контакта: ')
+    # get_email = views.getString()
+    # views.ShowInfo('Введите группу контакта: ')
+    # get_group = views.getString()
+    # views.ShowInfo('Введите город контакта: ')
+    # get_city = views.getString()
+    #
+    # with sql.engine.connect() as conn:
+    #     result = conn.execute(
+    #         sql.insert(sql.table_phonebook),
+    #         [
+    #             {'first_name': get_first_name,
+    #              'last_name': get_last_name,
+    #              'patronymic': get_patronymic,
+    #              # 'birthday': get_birthday,
+    #              'phone_person': get_phone_person,
+    #              'phone_work': get_phone_work,
+    #              'email': get_email,
+    #              'group': get_group,
+    #              'city': get_city,
+    #              },
+    #         ],
+    #     )
+    #     sql.connection.close()
 
 def get_SQL_DeleteContactBy_id():
     view.inputStr('РЕЖИМ УДАЛЕНИЯ КОНТАКТА')
@@ -191,6 +190,7 @@ def get_SQL_DeleteContactBy_id():
                 session.commit()
                 view.inputStr(f'Выбранный контакт с ID "{field}" удалён!')
                 # TODO: ниже должна быть отправка на главное меню
+                
             else:
                 view.inputStr(f'Вы отменили удаление контакта с ID "{field}"')
                 # TODO: ниже должна быть отправка на главное меню
@@ -208,7 +208,7 @@ def get_SQL_DeleteContactBy_id():
 def setExport_SQL_to_CSV():
     pass
 
-input('Enter для выхода')
+# input('Enter для выхода')
 
 # with engine.connect() as conn:
 #     result = conn.execute(
