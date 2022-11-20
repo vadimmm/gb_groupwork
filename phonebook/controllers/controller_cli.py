@@ -10,7 +10,7 @@ from gb_groupwork.phonebook.models import model_SQL as SQL
 
 
 
-class CLI_PhoneBook():
+class CLI_PhoneBook:
     def __init__(self):
         self.main = 'CLI'
         # self.DB_TYPE == 0
@@ -27,7 +27,7 @@ class CLI_PhoneBook():
 
     def menuSelectDbType(self):
         os.system('cls')
-        view.showInfo('invert', f'Выберите базу данных для дальнейшей работы:')
+        view.showInfo('invert', f'\nВыберите базу данных для дальнейшей работы:\n\n'.upper())
         view.showInfo('white', f'1 - Использовать базу на CSV\n'
                                f'2 - Использовать базу на SQL\n'
                                f'0 - ВЫХОД')
@@ -46,19 +46,19 @@ class CLI_PhoneBook():
             match int(self.select_db_type):
                 case 1:
                     view.showInfo('blue', 'Вы выбрали работу с CSV')
-                    self.DB_TYPE.menuSelectAction()
+                    self.menuSelectAction()
                     break
                 case 2:
                     view.showInfo('blue', 'Вы выбрали работу с SQL')
                     self.menuSelectAction()
                     break
                 case 0:
-                    view.showInfo('green', 'Выход из программы')
-                    exit
+                    view.showInfo('green', 'Вы вышли из программы')
+                    exit()
 
     def menuSelectAction(self):
         print('menuSelectActionCSV')
-        view.showInfo('invert', 'Выберите действие в адресной книге:')
+        view.showInfo('invert', '\nВыберите действие в адресной книге:\n\n'.upper())
         view.showInfo('white', f'1 - Отобразить все данные\n'
                                f'2 - Найти запись в справочнике\n'
                                f'3 - Добавить запись\n'
