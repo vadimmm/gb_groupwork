@@ -68,7 +68,7 @@ def inputInt(text: int):
             number = int(input(text))
             return number
         except:
-            showInfo('red','Ошибка! Введите целое число!')
+            showInfo('red', 'Ошибка! Введите целое число!')
 
 
 def inputStr(text):
@@ -77,7 +77,7 @@ def inputStr(text):
             string = input(text)
             return string
         except:
-            print('Ошибка! Введите слово!')
+            showInfo('red', 'Ошибка! Введите слово!')
 
 
 def showInfo(color=None, text=None):

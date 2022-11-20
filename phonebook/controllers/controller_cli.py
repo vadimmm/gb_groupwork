@@ -1,12 +1,19 @@
 import os
 from gb_groupwork.phonebook import view
-from gb_groupwork.phonebook.models import model_CSV, model_SQL
+from gb_groupwork.phonebook.models import model_CSV as CSV
+from gb_groupwork.phonebook.models import model_SQL as SQL
+# from gb_groupwork.phonebook.controllers import controller_CSV
+# from gb_groupwork.phonebook.controllers import controller_SQL
+
+# CSV = controller_CSV.CLI_PhoneBook_CSV()
+# SQL = controller_SQL.CLI_PhoneBook_SQL()
+
 
 
 class CLI_PhoneBook():
     def __init__(self):
         self.main = 'CLI'
-        # return self.main
+        # self.DB_TYPE == 0
 
     def test(self):
         view.showInfo('red', 'test')
@@ -14,34 +21,43 @@ class CLI_PhoneBook():
         view.showInfo('yellow', 'test')
         view.showInfo('green', 'test')
         view.showInfo('invert', 'test')
+
+    def init(self):
+        self.menuSelectDbType()
+
     def menuSelectDbType(self):
         os.system('cls')
         view.showInfo('invert', f'Выберите базу данных для дальнейшей работы:')
         view.showInfo('white', f'1 - Использовать базу на CSV\n'
                                f'2 - Использовать базу на SQL\n'
                                f'0 - ВЫХОД')
-        # view.showInfo('blue', 'Введите число: ')
         self.select_db_type = view.inputInt('Выберите пункт меню: ')
-        # return self.select_db_type
+
+        if self.select_db_type == 1:
+            self.DB_TYPE = CSV
+        elif self.select_db_type == 2:
+            self.DB_TYPE = SQL.SQL_model()
+
+        self.SelectDbType()
+
 
     def SelectDbType(self):
-        # global DB_TYPE
-        # DB_TYPE = self.select_db_type
         while True:
             match int(self.select_db_type):
                 case 1:
                     view.showInfo('blue', 'Вы выбрали работу с CSV')
-                    self.menuSelectActionCSV()
+                    self.DB_TYPE.menuSelectAction()
                     break
                 case 2:
                     view.showInfo('blue', 'Вы выбрали работу с SQL')
-                    self.menuSelectActionSQL()
+                    self.menuSelectAction()
                     break
                 case 0:
                     view.showInfo('green', 'Выход из программы')
                     exit
 
-    def menuSelectActionCSV(self):
+    def menuSelectAction(self):
+        print('menuSelectActionCSV')
         view.showInfo('invert', 'Выберите действие в адресной книге:')
         view.showInfo('white', f'1 - Отобразить все данные\n'
                                f'2 - Найти запись в справочнике\n'
@@ -49,60 +65,33 @@ class CLI_PhoneBook():
                                f'4 - экспортировать в ...\n'
                                f'0 - ВЕРНУТЬСЯ НАЗАД\n')
         self.select_action = view.inputInt('Выберите пункт меню: ')
-    def menuSelectActionSQL(self):
-        view.showInfo('invert', 'Выберите действие в адресной книге:')
-        view.showInfo('white', f'1 - Отобразить все данные\n'
-                               f'2 - Найти запись в справочнике\n'
-                               f'3 - Добавить запись\n'
-                               f'4 - экспортировать в ...\n'
-                               f'0 - ВЕРНУТЬСЯ НАЗАД\n')
-        self.select_action = view.inputInt('Выберите пункт меню: ')
+        self.SelectAction()
 
-    def SelectActionCSV(self):
+    def SelectAction(self):
         while True:
             match int(self.select_action):
                 case 1:
                     view.showInfo('blue', 'Отобразить все данные')
-                    model_CSV.show_CSV_PhoneBook_all()
+                    self.DB_TYPE.show_PhoneBook_all()
                     break
                 case 2:
                     view.showInfo('blue', 'Найти запись в справочнике')
-                    # model_CSV.get_CSV_FoundContactBy_first_name()
+                    self.DB_TYPE.get_FoundContactBy_first_name()
                     break
                 case 3:
                     view.showInfo('blue', 'Добавить запись')
-                    # model_CSV.set_CSV_NewContact()
+                    self.DB_TYPE.set_NewContact()
                     break
                 case 4:
-                    view.showInfo('blue', 'экспортировать в ...')
+                    view.showInfo('blue', 'Экспортировать в ...')
                     # TODO: export menu
-                    self.SelectActionCSV()
+
                     break
                 case 0:
-                    view.showInfo('green', 'Выход из программы')
-                    exit
-    def SelectActionSQL(self):
-        while True:
-            match int(self.select_action):
-                case 1:
-                    view.showInfo('blue', 'Отобразить все данные')
-                    model_SQL.show_SQL_PhoneBook_all()
-                    break
-                case 2:
-                    view.showInfo('blue', 'Найти запись в справочнике')
-                    model_SQL.get_SQL_FoundContactBy_first_name()
-                    break
-                case 3:
-                    view.showInfo('blue', 'Добавить запись')
-                    model_SQL.set_SQL_NewContact()
-                    break
-                case 4:
-                    view.showInfo('blue', 'экспортировать в ...')
-                    # TODO: export menu
-                    break
-                case 0:
-                    view.showInfo('green', 'Выход из программы')
-                    exit
+                    view.showInfo('green', 'Возврат в предыдущее меню...')
+                    self.menuSelectAction()
+
+
     #
     # def menu_person(self):
     #     view.showinfo(f'Выберите действие:\n'
@@ -140,8 +129,8 @@ class CLI_PhoneBook():
     #                   f'0 - ВЕРНУТЬСЯ НАЗАД\n')
 
 
-cli = CLI_PhoneBook()
-# cli.test()
-cli.menuSelectDbType()
-cli.SelectDbType()
-cli.menuSelectAction()
+# cli = CLI_PhoneBook
+# # cli.test()
+# cli.menuSelectDbType()
+# cli.SelectDbType()
+# cli.menuSelectAction()

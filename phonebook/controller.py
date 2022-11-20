@@ -1,11 +1,14 @@
 import os
 
 import view
-from gb_groupwork.phonebook.controllers.controller_cli import CLI_PhoneBook
+from gb_groupwork.phonebook.controllers import controller_cli
 
 
 # from models import model_SQL
 # from models import model_CSV as model
+
+DB_PATH = '../../gb_groupwork/phonebook/DATA/'
+DB_SQL_NAME = 'sqlite'
 
 
 # def start():
@@ -18,11 +21,12 @@ from gb_groupwork.phonebook.controllers.controller_cli import CLI_PhoneBook
 
 
 def init():
-    cli = CLI_PhoneBook()
+    cli = controller_cli.CLI_PhoneBook()
     # cli.test()
-    cli.menuSelectDbType()
-    cli.SelectDbType()
-    cli.menuSelectAction()
+    # cli.menuSelectDbType()
+    cli.init()
+    # cli.SelectDbType()
+    # cli.menuSelectActionCSV()
 
 # def SQLmenuWeb():
 #     while True:
