@@ -2,8 +2,12 @@ import os
 from gb_groupwork.phonebook import view
 from gb_groupwork.phonebook.models import model_CSV
 
-
-class CLI_PhoneBook_CSV():
+DELETE ALL
+DELETE ALL
+DELETE ALL
+DELETE ALL
+DELETE ALL
+class CLI_PhoneBook_CSV:
 
     def __init__(self):
         pass

@@ -79,6 +79,9 @@ def inputStr(text):
         except:
             showInfo('red', 'Ошибка! Введите слово!')
 
+def bamper():
+    return print('В разработке...'.upper())
+
 
 def showInfo(color=None, text=None):
     if color == 'white':
