@@ -2,6 +2,22 @@ import os
 from gb_groupwork.phonebook import view
 from gb_groupwork.phonebook.models import model_SQL
 
+
+DELETE ALL
+DELETE ALLDELETE ALLDELETE ALLDELETE ALLDELETE ALL
+DELETE ALL
+
+
+DELETE ALL
+DELETE ALL
+DELETE ALL
+DELETE ALL
+
+
+
+
+
+
 class CLI_PhoneBook_SQL():
 
     def __init__(self):

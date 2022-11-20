@@ -5,8 +5,9 @@ from gb_groupwork.phonebook import view
 
 
 DB_CSV_NAME = 'CSV'
-DB_CSV_PATH = '../../gb_groupwork/phonebook/DATA/'
-DB_CSV_PATH_FULL = DB_CSV_PATH + DB_CSV_NAME + '.csv'
+# DB_CSV_PATH = '../../DATA/'
+DB_PATH = '../../gb_groupwork/phonebook/DATA/'
+DB_CSV_PATH_FULL = DB_PATH + DB_CSV_NAME + '.csv'
 
 
 def getReadyDict(some_header):
@@ -28,9 +29,6 @@ def set_CSV_CreateDB():
         writer.writerow(data)
         print('Контакт успешно записан!')
 
-
-
-
 # if os.path.exists(DB_CSV_PATH_FULL) == True:
 #     print("Файл CSV БД НАЙДЕН")
 # else:
@@ -38,32 +36,33 @@ def set_CSV_CreateDB():
 #     set_CSV_CreateDB()
 
 def show_CSV_Column():
-    with open('CSV.csv', encoding='UTF8') as f:
+    with open(DB_CSV_PATH_FULL, 'r', encoding='UTF8') as f:
         reader = csv.DictReader(f)
-        return reader.fieldnames
+        print(reader.fieldnames)
+
+# show_CSV_Column()
 
 def show_CSV_PhoneBook_all():
-    with open('CSV.csv', encoding='UTF8') as f:
+    with open(DB_CSV_PATH_FULL, 'r', encoding='UTF8') as f:
         reader = csv.reader(f)
         for row in reader:
             print(" ".join(row))
 
+# show_CSV_PhoneBook_all()
+
 def get_CSV_FoundContactBy_Option():
-    global x
-    column = input(f'Введите параметр поиска контакта: ')
-    result = input(f'Введите {column} контакта: ')
-    with open('CSV.csv', encoding='UTF8') as f:
-        reader = csv.reader(f)
-        filtered_rows = []
-        for i, j in enumerate(show_CSV_Column()):
-            if j == column:
-                x = i
-        for row in reader:
-            if row[int(x)] not in result:
-                print(f'Контакт с {column} "{result}" не найден')
-            else:
-                filtered_rows.append(row)
-            print(f'Найденный контакт:\n {filtered_rows} ')
+    pass
+#     field = input(f'Введите параметр поиска контакта: ')
+#     result = input(f'Введите {field} контакта: ')
+#     with open('CSV.csv') as f:
+#         reader = csv.reader(f)
+#         for i, item in enumerate(reader):
+#             if field in reader:
+#
+#         if row == None:
+#             print(f'Контакт с {field} "{result}" не найден')
+#         else:
+#             print(f'Найденный контакт:\n {row} ')
 
 
 def get_CSV_DeleteContactBy_id():
@@ -71,7 +70,7 @@ def get_CSV_DeleteContactBy_id():
     view.inputStr('РЕЖИМ УДАЛЕНИЯ КОНТАКТА')
     field = view.inputStr('Введите ID контакта: ')
     lines = list()
-    with open('CSV.csv', 'r', encoding='UTF8') as readFile:
+    with open(DB_CSV_PATH_FULL, 'r', encoding='UTF8') as readFile:
         reader = csv.reader(readFile)
         for row in reader:
             lines.append(row)
@@ -82,17 +81,14 @@ def get_CSV_DeleteContactBy_id():
                 else:
                     print(f'Контакт с ID "{field}" не найден')
                     break
-    exportCSV(lines)
-
-def exportCSV(row):
-    with open(DB_CSV_PATH_FULL, 'w', encoding='UTF8') as f:
-        writer = csv.writer(f)
-        writer.writerow(row)
+    with open(DB_CSV_PATH_FULL, 'r', encoding='UTF8') as writeFile:
+        writer = csv.writer(writeFile)
+        writer.writerows(lines)
 
 
 
 
-set_CSV_CreateDB()
+# set_CSV_CreateDB()
 # show_CSV_Column()
 # show_CSV_PhoneBook_all()
 # get_CSV_FoundContactBy_Option()

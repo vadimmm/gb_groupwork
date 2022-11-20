@@ -146,7 +146,7 @@ class SQL_model:
         phone_work = self.session.query(self.PhoneBook).filter(self.PhoneBook.phone_work == field).all()
         responses = (first_name or last_name or phone_person or phone_work)
         if responses == []:
-            view.inputStr(f'Контакт с такими параметрами "{field}" не найден')
+            view.inputStr(f'Контакт с параметрами "{field}" не найден')
         else:
             for result in responses:
                 print(result)
@@ -182,6 +182,17 @@ class SQL_model:
             # result.commit()
             self.connection.close()
 
+
+    def get_ShowContactBy_id(self):
+        field = view.inputStr('Введите ID контакта: ')
+        responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).all()
+        if responses == []:
+            view.showInfo('red', f'Контакт с ID "{field}" не найден')
+        else:
+            for result in responses:
+                print(result.first_name)
+
+
     def get_DeleteContactBy_id(self):
         view.showInfo('РЕЖИМ УДАЛЕНИЯ КОНТАКТА')
         field = view.inputStr('Введите ID контакта: ')
@@ -191,43 +202,23 @@ class SQL_model:
         else:
             for result in responses:
                 print(result)
-                view.showInfo('ВЫ ТОЧНО ХОТИТЕ УДАЛИТЬ ВЫБРАННЫЙ КОНТАКТ БЕЗ ВОЗМОЖНОСТИ ВОССТАНОВЛЕНИЯ?')
+                view.showInfo('yellow', 'ВЫ ТОЧНО ХОТИТЕ УДАЛИТЬ ВЫБРАННЫЙ КОНТАКТ БЕЗ ВОЗМОЖНОСТИ ВОССТАНОВЛЕНИЯ?')
                 delChoice = view.inputStr('Нажмите "1" для удаления или "0" для отмены!\n')
                 if delChoice == '1':
                     self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).delete()
                     self.session.commit()
-                    view.showInfo(f'Выбранный контакт с ID "{field}" удалён!')
+                    view.showInfo('green', f'Выбранный контакт с ID "{field}" удалён!')
                     # TODO: ниже должна быть отправка на главное меню
 
                 else:
-                    view.showInfo(f'Вы отменили удаление контакта с ID "{field}"')
+                    view.showInfo('blue', f'Вы отменили удаление контакта с ID "{field}"')
                     # TODO: ниже должна быть отправка на главное меню
 
 
-
-    class AlchemyEncoder(json.JSONEncoder):
-
-        def default(self, obj):
-            if isinstance(obj.__class__, DeclarativeMeta):
-                # an SQLAlchemy class
-                fields = {}
-                for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
-                    data = obj.__getattribute__(field)
-                    try:
-                        json.dumps(data) # this will fail on non-encodable values, like other classes
-                        fields[field] = data
-                    except TypeError:
-                        fields[field] = None
-                # a json-encodable dict
-                return fields
-
-            return json.JSONEncoder.default(self, obj)
-
-
-    # c = model_SQL.PhoneBook()
-    # print(json.dumps(c, cls=AlchemyEncoder))
-
     def setExport_SQL_to_CSV(self):
+        pass
+
+    def setImport_CSV_toSQL(self):
         pass
 
     # input('Enter для выхода')

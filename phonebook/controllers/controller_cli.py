@@ -13,7 +13,6 @@ from gb_groupwork.phonebook.models import model_SQL as SQL
 class CLI_PhoneBook:
     def __init__(self):
         self.main = 'CLI'
-        # self.DB_TYPE == 0
 
     def test(self):
         view.showInfo('red', 'test')
@@ -25,78 +24,108 @@ class CLI_PhoneBook:
     def init(self):
         self.menuSelectDbType()
 
+    def setPrintDict(self, dictName):
+        menu = ''.join(f'{key} - {value}\n' for key, value in dictName.items())
+        view.showInfo('white', f'{menu}')
+
+
     def menuSelectDbType(self):
+        actionMenu = {
+            1: 'Использовать базу на CSV',
+            2: 'Использовать базу на SQL',
+            0: 'ВЫХОД'
+        }
+        action = {
+            1: self.menuSelectAction,
+            2: self.menuSelectAction,
+            0: exit,
+        }
         os.system('cls')
         view.showInfo('invert', f'\nВыберите базу данных для дальнейшей работы:\n\n'.upper())
-        view.showInfo('white', f'1 - Использовать базу на CSV\n'
-                               f'2 - Использовать базу на SQL\n'
-                               f'0 - ВЫХОД')
-        self.select_db_type = view.inputInt('Выберите пункт меню: ')
-
-        if self.select_db_type == 1:
-            self.DB_TYPE = CSV
-        elif self.select_db_type == 2:
+        self.setPrintDict(actionMenu)
+        choice = view.inputInt('Выберите пункт меню: ')
+        if choice == 1:
+            self.DB_TYPE = CSV.CSV_model()
+        elif choice == 2:
             self.DB_TYPE = SQL.SQL_model()
+        run = action.get(choice)
+        if run:
+            run()
+        else:
+            view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
 
-        self.SelectDbType()
-
-
-    def SelectDbType(self):
-        while True:
-            match int(self.select_db_type):
-                case 1:
-                    view.showInfo('blue', 'Вы выбрали работу с CSV')
-                    self.menuSelectAction()
-                    break
-                case 2:
-                    view.showInfo('blue', 'Вы выбрали работу с SQL')
-                    self.menuSelectAction()
-                    break
-                case 0:
-                    view.showInfo('green', 'Вы вышли из программы')
-                    exit()
 
     def menuSelectAction(self):
-        print('menuSelectActionCSV')
+        actionMenu = {
+            1: 'Отобразить все данные',
+            2: 'Найти запись в справочнике',
+            3: 'Добавить запись',
+            4: 'Экспортировать в ...',
+            0: 'ВЕРНУТЬСЯ НАЗАД'
+        }
+        action = {
+            1: self.DB_TYPE.show_PhoneBook_all,
+            2: self.DB_TYPE.get_FoundContact,
+            3: self.DB_TYPE.set_NewContact,
+            4: '# TODO: export menu',
+            0: self.menuSelectDbType,
+        }
         view.showInfo('invert', '\nВыберите действие в адресной книге:\n\n'.upper())
-        view.showInfo('white', f'1 - Отобразить все данные\n'
-                               f'2 - Найти запись в справочнике\n'
-                               f'3 - Добавить запись\n'
-                               f'4 - экспортировать в ...\n'
-                               f'0 - ВЕРНУТЬСЯ НАЗАД\n')
-        self.select_action = view.inputInt('Выберите пункт меню: ')
-        self.SelectAction()
-
-    def SelectAction(self):
-        while True:
-            match int(self.select_action):
-                case 1:
-                    view.showInfo('blue', 'Отобразить все данные')
-                    self.DB_TYPE.show_PhoneBook_all()
-                    break
-                case 2:
-                    view.showInfo('blue', 'Найти запись в справочнике')
-                    self.DB_TYPE.get_FoundContact()
-                    break
-                case 3:
-                    view.showInfo('blue', 'Добавить запись')
-                    self.DB_TYPE.set_NewContact()
-                    break
-                case 4:
-                    view.showInfo('blue', 'Экспортировать в ...')
-                    # TODO: export menu
-                    break
-                case 0:
-                    view.showInfo('green', 'Возврат в предыдущее меню...')
-                    self.menuSelectAction()
+        self.setPrintDict(actionMenu)
+        choice = view.inputInt('Выберите пункт меню: ')
+        run = action.get(choice)
+        if run:
+            run()
+        else:
+            view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
 
 
 
     def menu_person(self):
+
+        actionMenu = {
+            1: 'Изменить поле',
+            2: 'Удалить запись',
+            0: 'ВЕРНУТЬСЯ НАЗАД'
+        }
+        action = {
+            1: self.DB_TYPE.show_PhoneBook_all,
+            2: self.DB_TYPE.get_DeleteContactBy_id,
+            0: self.menuSelectDbType,
+        }
         view.showInfo('invert', '\nВыберите действие c контактом:\n\n'.upper())
-        view.showinfo(f'1 - Изменить поле:\n'
-                      f'2 - Удалить запись\n'
-                      f'0 - ВЕРНУТЬСЯ НАЗАД\n')
+        self.setPrintDict(actionMenu)
+        choice = view.inputInt('Выберите пункт меню: ')
+        run = action.get(choice)
+        if run:
+            run()
+        else:
+            view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
+
+    def menuSelectGroup(self):
+
+        actionMenu = {
+            1: 'Семья',
+            2: 'Друзья',
+            3: 'Работа',
+            4: 'Другие',
+            0: 'ВЕРНУТЬСЯ НАЗАД',
+        }
+        action = {
+            1: view.bamper,
+            2: view.bamper,
+            3: view.bamper,
+            4: view.bamper,
+            0: view.bamper,
+        }
+        view.showInfo('invert', '\nВыберите группу для контакта:\n\n'.upper())
+        self.setPrintDict(actionMenu)
+        choice = view.inputInt('Выберите пункт меню: ')
+        run = action.get(choice)
+        if run:
+            run()
+        else:
+            view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
 
     # def menu_edit_field(self):
     #     view.showinfo('КАКОЕ ПОЛЕ ИЗМЕНИТЬ В КОНТАКТЕ?\n')
@@ -131,4 +160,4 @@ class CLI_PhoneBook:
 # # cli.test()
 # cli.menuSelectDbType()
 # cli.SelectDbType()
-# cli.menuSelectAction()
+# cli.menuSelectAction
