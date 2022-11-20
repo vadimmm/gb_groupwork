@@ -53,7 +53,7 @@ class CLI_PhoneBook:
             1: self.DB_TYPE.show_PhoneBook_all,
             2: self.DB_TYPE.get_FoundContact,
             3: self.DB_TYPE.set_NewContact,
-            4: '# TODO: export menu',
+            4: view.bamper,
             0: self.menuSelectDbType,
         }
         view.showInfo('invert', '\nВыберите действие в адресной книге:\n\n'.upper())
@@ -66,8 +66,7 @@ class CLI_PhoneBook:
             view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
 
 
-
-    def menu_person(self):
+    def menuEditContact(self):
 
         actionMenu = {
             1: 'Изменить поле',
@@ -88,8 +87,7 @@ class CLI_PhoneBook:
         else:
             view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
 
-    def menuSelectGroup(self):
-
+    def menuEditGroupField(self):
         actionMenu = {
             1: 'Семья',
             2: 'Друзья',
@@ -125,13 +123,6 @@ class CLI_PhoneBook:
     #                   f'7 - Электронную почту\n'
     #                   f'8 - Группу контакта\n'
     #                   f'9 - Город\n'
-    #                   f'0 - ВЕРНУТЬСЯ НАЗАД\n')
-    #
-    # def menu_edit_group_field(self):
-    #     view.showinfo(f'Выберите группу из списка:\n'
-    #                   f'1 - Семья\n'
-    #                   f'2 - Работа\n'
-    #                   f'3 - Друзья\n'
     #                   f'0 - ВЕРНУТЬСЯ НАЗАД\n')
     #
     # def menu_export(self):

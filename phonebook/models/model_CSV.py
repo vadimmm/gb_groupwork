@@ -27,6 +27,11 @@ class CSV_model:
             writer.writerow(data)
             print('Контакт успешно записан!')
 
+
+    def set_NewContact(self):
+        view.bamper()
+
+
     # if os.path.exists(DB_CSV_PATH_FULL) == True:
     #     print("Файл CSV БД НАЙДЕН")
     # else:
@@ -46,7 +51,7 @@ class CSV_model:
             for row in reader:
                 print(" ".join(row))
 
-    def get_FoundContactBy_Option(self):
+    def get_FoundContact(self):
         global x
         column = input(f'Введите параметр поиска контакта: ')
         result = input(f'Введите {column} контакта: ')
@@ -68,18 +73,20 @@ class CSV_model:
         self.show_PhoneBook_all()
         view.inputStr('РЕЖИМ УДАЛЕНИЯ КОНТАКТА')
         field = view.inputStr('Введите ID контакта: ')
-        lines = list()
+        self.lines = list()
         with open(self.DB_CSV_PATH_FULL, 'r', encoding='UTF8') as readFile:
             reader = csv.reader(readFile)
             for row in reader:
-                lines.append(row)
+                self.lines.append(row)
                 for f in row:
                     if f == field:
-                        lines.remove(row)
-                        print(lines)
+                        self.lines.remove(row)
+                        print(self.lines)
                     else:
                         print(f'Контакт с ID "{field}" не найден')
                         break
-        with open(self.DB_CSV_PATH_FULL, 'r', encoding='UTF8') as writeFile:
+        self.set_WriteFile(self.lines)
+    def set_WriteFile(self, value):
+        with open(self.DB_CSV_PATH_FULL, 'w', encoding='UTF8') as writeFile:
             writer = csv.writer(writeFile)
-            writer.writerows(lines)
+            writer.writerows(value)
