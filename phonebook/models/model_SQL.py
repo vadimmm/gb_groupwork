@@ -12,7 +12,7 @@ from gb_groupwork.phonebook.controller import DB_PATH, DB_SQL_NAME
 
 class SQL_model:
     def __init__(self):
-        DB_NAME = 'sqlite'
+        # DB_NAME = 'sqlite'
         # DB_PATH = '../../gb_groupwork/phonebook/DATA/'
         self.DB_SQL_PATH_FULL = DB_PATH + DB_SQL_NAME + '.sqlite'
         self.engine = db.create_engine('sqlite:///' + self.DB_SQL_PATH_FULL, echo=False)
@@ -138,64 +138,69 @@ class SQL_model:
             for result in responses:
                 print(result)
 
-    def set_NewContact(self):
-        pass
-        # views.ShowInfo('Введите имя контакта: ')
-        # get_first_name = views.getString()
-        # views.ShowInfo('Введите фамилию контакта: ')
-        # get_last_name = views.getString()
-        # views.ShowInfo('Введите отчество контакта: ')
-        # get_patronymic = views.getString()
-        # views.ShowInfo('Введите дату ДР контакта: ')
-        # get_birthday = views.getString()
-        # views.ShowInfo('Введите мобильный телефон контакта: ')
-        # get_phone_person = views.getString()
-        # views.ShowInfo('Введите рабочий телефон контакта: ')
-        # get_phone_work = views.getString()
-        # views.ShowInfo('Введите email контакта: ')
-        # get_email = views.getString()
-        # views.ShowInfo('Введите группу контакта: ')
-        # get_group = views.getString()
-        # views.ShowInfo('Введите город контакта: ')
-        # get_city = views.getString()
-        #
-        # with sql.engine.connect() as conn:
-        #     result = conn.execute(
-        #         sql.insert(sql.table_phonebook),
-        #         [
-        #             {'first_name': get_first_name,
-        #              'last_name': get_last_name,
-        #              'patronymic': get_patronymic,
-        #              # 'birthday': get_birthday,
-        #              'phone_person': get_phone_person,
-        #              'phone_work': get_phone_work,
-        #              'email': get_email,
-        #              'group': get_group,
-        #              'city': get_city,
-        #              },
-        #         ],
-        #     )
-        #     sql.connection.close()
-
-    def get_SQL_DeleteContactBy_id(self):
-        view.inputStr('РЕЖИМ УДАЛЕНИЯ КОНТАКТА')
-        field = view.inputStr('Введите ID контакта: ')
-        responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).all()
+    def get_FoundContact(self):
+        field = view.inputStr('Введите параметры поиска: ')
+        first_name = self.session.query(self.PhoneBook).filter(self.PhoneBook.first_name == field).all()
+        last_name = self.session.query(self.PhoneBook).filter(self.PhoneBook.last_name == field).all()
+        phone_person = self.session.query(self.PhoneBook).filter(self.PhoneBook.phone_person == field).all()
+        phone_work = self.session.query(self.PhoneBook).filter(self.PhoneBook.phone_work == field).all()
+        responses = (first_name or last_name or phone_person or phone_work)
         if responses == []:
-            view.inputStr(f'Контакт с ID "{field}" не найден')
+            view.inputStr(f'Контакт с такими параметрами "{field}" не найден')
         else:
             for result in responses:
                 print(result)
-                view.inputStr('ВЫ ТОЧНО ХОТИТЕ УДАЛИТЬ ВЫБРАННЫЙ КОНТАКТ БЕЗ ВОЗМОЖНОСТИ ВОССТАНОВЛЕНИЯ?')
+
+    def set_NewContact(self):
+        view.showInfo('invert', '\nрежим добавления нового контакта\n\n'.upper())
+        get_first_name = view.inputStr('Введите имя контакта: ')
+        get_last_name = view.inputStr('Введите фамилию контакта: ')
+        get_patronymic = view.inputStr('Введите отчество контакта: ')
+        get_birthday = view.inputStr('Введите дату ДР контакта: ')
+        get_phone_person = view.inputStr('Введите мобильный телефон контакта: ')
+        get_phone_work = view.inputStr('Введите рабочий телефон контакта: ')
+        get_email = view.inputStr('Введите email контакта: ')
+        get_group = view.inputStr('Введите группу контакта: ')
+        get_city = view.inputStr('Введите город контакта: ')
+
+        with self.engine.connect() as conn:
+            result = conn.execute(
+                self.insert(self.table_phonebook),
+                [
+                    {'first_name': get_first_name,
+                     'last_name': get_last_name,
+                     'patronymic': get_patronymic,
+                     'birthday': get_birthday,
+                     'phone_person': get_phone_person,
+                     'phone_work': get_phone_work,
+                     'email': get_email,
+                     'group': get_group,
+                     'city': get_city,
+                     },
+                ],
+            )
+            # result.commit()
+            self.connection.close()
+
+    def get_DeleteContactBy_id(self):
+        view.showInfo('РЕЖИМ УДАЛЕНИЯ КОНТАКТА')
+        field = view.inputStr('Введите ID контакта: ')
+        responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).all()
+        if responses == []:
+            view.showInfo(f'Контакт с ID "{field}" не найден')
+        else:
+            for result in responses:
+                print(result)
+                view.showInfo('ВЫ ТОЧНО ХОТИТЕ УДАЛИТЬ ВЫБРАННЫЙ КОНТАКТ БЕЗ ВОЗМОЖНОСТИ ВОССТАНОВЛЕНИЯ?')
                 delChoice = view.inputStr('Нажмите "1" для удаления или "0" для отмены!\n')
                 if delChoice == '1':
                     self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).delete()
                     self.session.commit()
-                    view.inputStr(f'Выбранный контакт с ID "{field}" удалён!')
+                    view.showInfo(f'Выбранный контакт с ID "{field}" удалён!')
                     # TODO: ниже должна быть отправка на главное меню
 
                 else:
-                    view.inputStr(f'Вы отменили удаление контакта с ID "{field}"')
+                    view.showInfo(f'Вы отменили удаление контакта с ID "{field}"')
                     # TODO: ниже должна быть отправка на главное меню
 
 
@@ -221,17 +226,6 @@ class SQL_model:
 
     # c = model_SQL.PhoneBook()
     # print(json.dumps(c, cls=AlchemyEncoder))
-
-
-
-
-    # show_SQL_PhoneBook_all()
-    # get_SQL_FoundContactBy_id()
-    # get_SQL_FoundContactBy_first_name()
-    # get_SQL_FoundContactBy_last_name()
-    # get_SQL_FoundContactBy_phone_person()
-    # get_SQL_DeleteContactBy_id()
-
 
     def setExport_SQL_to_CSV(self):
         pass

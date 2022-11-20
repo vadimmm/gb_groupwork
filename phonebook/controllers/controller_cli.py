@@ -76,7 +76,7 @@ class CLI_PhoneBook:
                     break
                 case 2:
                     view.showInfo('blue', 'Найти запись в справочнике')
-                    self.DB_TYPE.get_FoundContactBy_first_name()
+                    self.DB_TYPE.get_FoundContact()
                     break
                 case 3:
                     view.showInfo('blue', 'Добавить запись')
@@ -85,20 +85,19 @@ class CLI_PhoneBook:
                 case 4:
                     view.showInfo('blue', 'Экспортировать в ...')
                     # TODO: export menu
-
                     break
                 case 0:
                     view.showInfo('green', 'Возврат в предыдущее меню...')
                     self.menuSelectAction()
 
 
-    #
-    # def menu_person(self):
-    #     view.showinfo(f'Выберите действие:\n'
-    #                   f'1 - Изменить поле:\n'
-    #                   f'2 - Удалить запись\n'
-    #                   f'0 - ВЕРНУТЬСЯ НАЗАД\n')
-    #
+
+    def menu_person(self):
+        view.showInfo('invert', '\nВыберите действие c контактом:\n\n'.upper())
+        view.showinfo(f'1 - Изменить поле:\n'
+                      f'2 - Удалить запись\n'
+                      f'0 - ВЕРНУТЬСЯ НАЗАД\n')
+
     # def menu_edit_field(self):
     #     view.showinfo('КАКОЕ ПОЛЕ ИЗМЕНИТЬ В КОНТАКТЕ?\n')
     #     view.showinfo(f'Выберите действие:\n'
@@ -121,7 +120,6 @@ class CLI_PhoneBook:
     #                   f'0 - ВЕРНУТЬСЯ НАЗАД\n')
     #
     # def menu_export(self):
-    #     # param_dict = [{1: }]
     #     view.showinfo(f'Выберите действие:\n'
     #                   f'1 - в SCV\n'
     #                   f'2 - в JSON\n'
