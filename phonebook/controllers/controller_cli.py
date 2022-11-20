@@ -2,29 +2,15 @@ import os
 from gb_groupwork.phonebook import view
 from gb_groupwork.phonebook.models import model_CSV as CSV
 from gb_groupwork.phonebook.models import model_SQL as SQL
-# from gb_groupwork.phonebook.controllers import controller_CSV
-# from gb_groupwork.phonebook.controllers import controller_SQL
-
-# CSV = controller_CSV.CLI_PhoneBook_CSV()
-# SQL = controller_SQL.CLI_PhoneBook_SQL()
-
-
 
 class CLI_PhoneBook:
     def __init__(self):
         self.main = 'CLI'
 
-    def test(self):
-        view.showInfo('red', 'test')
-        view.showInfo('blue', 'test')
-        view.showInfo('yellow', 'test')
-        view.showInfo('green', 'test')
-        view.showInfo('invert', 'test')
-
     def init(self):
         self.menuSelectDbType()
 
-    def setPrintDict(self, dictName):
+    def getPrintDict(self, dictName):
         menu = ''.join(f'{key} - {value}\n' for key, value in dictName.items())
         view.showInfo('white', f'{menu}')
 
@@ -42,7 +28,7 @@ class CLI_PhoneBook:
         }
         os.system('cls')
         view.showInfo('invert', f'\nВыберите базу данных для дальнейшей работы:\n\n'.upper())
-        self.setPrintDict(actionMenu)
+        self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
         if choice == 1:
             self.DB_TYPE = CSV.CSV_model()
@@ -71,7 +57,7 @@ class CLI_PhoneBook:
             0: self.menuSelectDbType,
         }
         view.showInfo('invert', '\nВыберите действие в адресной книге:\n\n'.upper())
-        self.setPrintDict(actionMenu)
+        self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
         run = action.get(choice)
         if run:
@@ -94,7 +80,7 @@ class CLI_PhoneBook:
             0: self.menuSelectDbType,
         }
         view.showInfo('invert', '\nВыберите действие c контактом:\n\n'.upper())
-        self.setPrintDict(actionMenu)
+        self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
         run = action.get(choice)
         if run:
@@ -119,7 +105,7 @@ class CLI_PhoneBook:
             0: view.bamper,
         }
         view.showInfo('invert', '\nВыберите группу для контакта:\n\n'.upper())
-        self.setPrintDict(actionMenu)
+        self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
         run = action.get(choice)
         if run:
