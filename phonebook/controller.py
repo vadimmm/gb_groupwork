@@ -10,6 +10,8 @@ from gb_groupwork.phonebook.controllers import controller_cli
 DB_PATH = '../../gb_groupwork/phonebook/DATA/'
 DB_SQL_NAME = 'sqlite'
 DB_CSV_NAME = 'CSV'
+DB_CSV_PATH_FULL = DB_PATH + DB_CSV_NAME + '.csv'
+DB_SQL_PATH_FULL = DB_PATH + DB_SQL_NAME + '.sqlite'
 
 
 # def start():

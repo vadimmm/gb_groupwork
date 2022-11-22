@@ -9,7 +9,6 @@ class CLI_PhoneBook:
 
     def init(self):
         self.menuSelectDbType()
-        self.menuSelectAction()
 
 
     def getPrintDict(self, dictName):

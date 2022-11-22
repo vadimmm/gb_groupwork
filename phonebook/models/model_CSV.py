@@ -1,14 +1,14 @@
 # ['id', 'first_name', 'last_name', 'patronymic', 'birt#hday', 'phone_person', 'phone_work', 'email', 'group', 'city'])
 import csv
 from gb_groupwork.phonebook import view
-from gb_groupwork.phonebook.controller import DB_PATH, DB_CSV_NAME
+from gb_groupwork.phonebook.controller import DB_PATH, DB_CSV_NAME, DB_CSV_PATH_FULL
 import os
 
 
 
 class CSV_model:
     def __init__(self):
-        self.DB_CSV_PATH_FULL = DB_PATH + DB_CSV_NAME + '.csv'
+        self.DB_CSV_PATH_FULL = DB_CSV_PATH_FULL
 
     def checkDB(self):
         if os.path.exists(self.DB_CSV_PATH_FULL) == True:
@@ -64,7 +64,7 @@ class CSV_model:
     def get_FoundContact(self):
         column = self.exceptValueError()
         result = input(f'Введите {column} для поиска: ')
-        filtered_rows = []
+        # filtered_rows = []
         with open(self.DB_CSV_PATH_FULL, 'r', encoding='UTF8') as f:
             reader = csv.reader(f)
             filtered_rows = [row for idx, row in enumerate(reader) if str(idx) == result]
