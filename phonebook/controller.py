@@ -26,8 +26,8 @@ def init():
     # cli.test()
     # cli.menuSelectDbType()
     cli.init()
-    # cli.SelectDbType()
-    # cli.menuSelectActionCSV()
+    # cli.menuSelectDbType()
+    # cli.menuSelectAction()
 
 # def SQLmenuWeb():
 #     while True:

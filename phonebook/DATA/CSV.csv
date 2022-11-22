@@ -1,1 +1,6 @@
-id,first_name,last_name,patronymic,phone_person,phone_work,email,group,city1,Иван,Петров,Петровчи,123456789,987654321,mail@mail.ml,group_1,Default5,пп,рр,оо,лл,дд,фф,вв,сс,,
+id,first_name,last_name,patronymic,phone_person,phone_work,email,group,city1
+1,Петр,Петрович,Петров,89994657836,84996573336,petrov@mail.ru,Работа,Москва
+3,Инна,Иванова,Ивановна,89994657846,83476665869,ivanova@mail.ru,Друзья,Уфа
+4,Игорь,Жиляев,Игоревич,89567456578,89975465734,zhilyayev@yahoo.com,Работа,Воронеж
+5,Кирилл,Кузнецов,Федорович,87654453321,89647533312,kuzn@mail.ru,Семья,Рязань
+

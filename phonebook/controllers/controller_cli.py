@@ -9,11 +9,12 @@ class CLI_PhoneBook:
 
     def init(self):
         self.menuSelectDbType()
+        self.menuSelectAction()
+
 
     def getPrintDict(self, dictName):
         menu = ''.join(f'{key} - {value}\n' for key, value in dictName.items())
         view.showInfo('white', f'{menu}')
-
 
     def menuSelectDbType(self):
         actionMenu = {
@@ -46,14 +47,16 @@ class CLI_PhoneBook:
             1: 'Отобразить все данные',
             2: 'Найти запись в справочнике',
             3: 'Добавить запись',
-            4: 'Экспортировать в ...',
+            4: 'Удалить запись',
+            5: 'Экспортировать в ...',
             0: 'ВЕРНУТЬСЯ НАЗАД'
         }
         action = {
             1: self.DB_TYPE.show_PhoneBook_all,
             2: self.DB_TYPE.get_FoundContact,
             3: self.DB_TYPE.set_NewContact,
-            4: view.bamper,
+            4: self.DB_TYPE.get_DeleteContact,
+            5: view.bamper,
             0: self.menuSelectDbType,
         }
         view.showInfo('invert', '\nВыберите действие в адресной книге:\n\n'.upper())
@@ -63,29 +66,41 @@ class CLI_PhoneBook:
         if run:
             run()
         else:
-            view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
+            view.showInfo('red', f'Недопустимый выбор {choice}! Попробуйте снова!')
+        if choice == 1:
+            self.menuEditContact()
+        if choice == 2:
+            self.menuEditContact()
+        if choice == 0:
+            self.menuSelectAction()
 
 
     def menuEditContact(self):
 
         actionMenu = {
-            1: 'Изменить поле',
+            1: 'Добавить запись',
             2: 'Удалить запись',
             0: 'ВЕРНУТЬСЯ НАЗАД'
         }
         action = {
-            1: self.DB_TYPE.show_PhoneBook_all,
-            2: self.DB_TYPE.get_DeleteContactBy_id,
-            0: self.menuSelectDbType,
+            1: self.DB_TYPE.set_NewContact,
+            2: self.DB_TYPE.get_DeleteContact,
+            0: self.menuSelectAction,
         }
-        view.showInfo('invert', '\nВыберите действие c контактом:\n\n'.upper())
+        view.showInfo('invert', '\nДействие c контактом:\n\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
         run = action.get(choice)
         if run:
             run()
         else:
-            view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
+            view.showInfo(f'Недопустимый выбор {choice}. Попробуйте снова!')
+        if choice == 1:
+            self.menuEditContact()
+        if choice == 2:
+            self.menuEditContact()
+        if choice == 0:
+            self.menuSelectAction()
 
     def menuEditGroupField(self):
         actionMenu = {

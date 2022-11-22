@@ -8,6 +8,7 @@ import os
 from gb_groupwork.phonebook import views
 from gb_groupwork.phonebook import view
 from gb_groupwork.phonebook.controller import DB_PATH, DB_SQL_NAME
+from gb_groupwork.phonebook.controllers import controller_cli
 
 
 class SQL_model:
@@ -49,9 +50,9 @@ class SQL_model:
 
     def checkDB(self):
         if os.path.exists(self.DB_SQL_PATH_FULL) == True:
-            print("Файл БД НАЙДЕН")
+            view.showInfo('blue', 'Файл БД НАЙДЕН')
         else:
-            print("Файл БД НЕ НАЙДЕН, БУДЕТ СОЗДАНА БД")
+            view.showInfo('blue', 'Файл БД НЕ НАЙДЕН, БУДЕТ СОЗДАНА БД')
             self.set_SQL_CreateDB()
 
 
@@ -83,16 +84,18 @@ class SQL_model:
                    f'{self.group} ' \
                    f'{self.city} '
 
+
     def show_SQL_Column(self):
         with self.connection as conn:
             result = conn.execute(
                 select([self.PhoneBook.id, self.PhoneBook.first_name, self.PhoneBook.last_name, self.PhoneBook.patronymic, self.PhoneBook.birthday,
                         self.PhoneBook.phone_person, self.PhoneBook.phone_work, self.PhoneBook.email,
                         self.PhoneBook.group, self.PhoneBook.city]))
-        print(result._metadata.keys)
+        view.showInfo('white', f'{result._metadata.keys}')
 
 
     def show_PhoneBook_all(self):
+        view.showInfo('white', 'СПИСОК КОНТАКТОВ: ')
         self.show_SQL_Column()
         responses = self.session.query(self.PhoneBook).all()
         for result in responses:
@@ -139,7 +142,7 @@ class SQL_model:
                 print(result)
 
     def get_FoundContact(self):
-        field = view.inputStr('Введите параметры поиска: ')
+        field = view.inputStr('Введите параметр поиска контакта: ')
         first_name = self.session.query(self.PhoneBook).filter(self.PhoneBook.first_name == field).all()
         last_name = self.session.query(self.PhoneBook).filter(self.PhoneBook.last_name == field).all()
         phone_person = self.session.query(self.PhoneBook).filter(self.PhoneBook.phone_person == field).all()
@@ -147,6 +150,7 @@ class SQL_model:
         responses = (first_name or last_name or phone_person or phone_work)
         if responses == []:
             view.inputStr(f'Контакт с параметрами "{field}" не найден')
+
         else:
             for result in responses:
                 print(result)
@@ -193,9 +197,10 @@ class SQL_model:
                 print(result.first_name)
 
 
-    def get_DeleteContactBy_id(self):
+    def get_DeleteContact(self):
+        self.show_PhoneBook_all()
         view.showInfo('РЕЖИМ УДАЛЕНИЯ КОНТАКТА')
-        field = view.inputStr('Введите ID контакта: ')
+        field = view.inputStr('Введите ID контакта для удаления: ')
         responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).all()
         if responses == []:
             view.showInfo(f'Контакт с ID "{field}" не найден')
@@ -203,16 +208,14 @@ class SQL_model:
             for result in responses:
                 print(result)
                 view.showInfo('yellow', 'ВЫ ТОЧНО ХОТИТЕ УДАЛИТЬ ВЫБРАННЫЙ КОНТАКТ БЕЗ ВОЗМОЖНОСТИ ВОССТАНОВЛЕНИЯ?')
-                delChoice = view.inputStr('Нажмите "1" для удаления или "0" для отмены!\n')
+                delChoice = view.inputStr('Нажмите "1" для удаления или "0" для отмены:\n')
                 if delChoice == '1':
                     self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).delete()
                     self.session.commit()
                     view.showInfo('green', f'Выбранный контакт с ID "{field}" удалён!')
-                    # TODO: ниже должна быть отправка на главное меню
-
                 else:
                     view.showInfo('blue', f'Вы отменили удаление контакта с ID "{field}"')
-                    # TODO: ниже должна быть отправка на главное меню
+
 
 
     def setExport_SQL_to_CSV(self):
