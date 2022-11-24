@@ -1,5 +1,6 @@
 import os
 from gb_groupwork.phonebook import view
+from gb_groupwork.phonebook import controller
 from gb_groupwork.phonebook.models import model_CSV as CSV
 from gb_groupwork.phonebook.models import model_SQL as SQL
 
@@ -38,7 +39,7 @@ class CLI_PhoneBook:
         if run:
             run()
         else:
-            view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
+            view.showInfo('red', f'Вы сделали недопустимый выбор {choice}. Попробуйте снова!')
 
 
     def menuSelectAction(self):
@@ -55,7 +56,7 @@ class CLI_PhoneBook:
             2: self.DB_TYPE.get_FoundContact,
             3: self.DB_TYPE.set_NewContact,
             4: self.DB_TYPE.get_DeleteContact,
-            5: view.bamper,
+            5: self.menuSelectExportDbType,
             0: self.menuSelectDbType,
         }
         view.showInfo('invert', '\nВыберите действие в адресной книге:\n\n'.upper())
@@ -68,9 +69,15 @@ class CLI_PhoneBook:
             view.showInfo('red', f'Недопустимый выбор {choice}! Попробуйте снова!')
         if choice == 1:
             self.menuEditContact()
-        if choice == 2:
+        elif choice == 2:
             self.menuEditContact()
-        if choice == 0:
+        elif choice == 3:
+            self.menuEditContact()
+        elif choice == 4:
+            self.menuEditContact()
+        elif choice == 5:
+            self.menuSelectAction()
+        elif choice == 0:
             self.menuSelectAction()
 
 
@@ -96,9 +103,9 @@ class CLI_PhoneBook:
             view.showInfo(f'Недопустимый выбор {choice}. Попробуйте снова!')
         if choice == 1:
             self.menuEditContact()
-        if choice == 2:
+        elif choice == 2:
             self.menuEditContact()
-        if choice == 0:
+        elif choice == 0:
             self.menuSelectAction()
 
     def menuEditGroupField(self):
@@ -124,6 +131,37 @@ class CLI_PhoneBook:
             run()
         else:
             view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
+
+    def menuSelectExportDbType(self):
+        actionMenu = {
+            1: 'Экспорт в .txt (только для CSV)',
+            2: 'Экспорт в .sqlite (только для CSV)',
+            3: 'Экспорт в .csv (только для SQL)',
+            0: 'ВЕРНУТЬСЯ НАЗАД',
+        }
+        action = {
+            1: self.DB_TYPE.Export_toTxt,
+            2: self.DB_TYPE.Export_CSVtoSQL,
+            3: self.DB_TYPE.Export_SQLtoCSV,
+            0: self.menuSelectAction,
+        }
+        view.showInfo('invert', '\nВыберите базу данных для экспорта:\n\n'.upper())
+        self.getPrintDict(actionMenu)
+        choice = view.inputInt('Выберите пункт меню: ')
+        run = action.get(choice)
+        if run:
+            run()
+        else:
+            view.showInfo('red', f'Вы сделали недопустимый выбор {choice}. Попробуйте снова!')
+        if choice == 1:
+            self.menuSelectExportDbType()
+        elif choice == 2:
+            self.menuSelectExportDbType()
+        elif choice == 3:
+            self.menuSelectExportDbType()
+
+
+
 
     # def menu_edit_field(self):
     #     view.showinfo('КАКОЕ ПОЛЕ ИЗМЕНИТЬ В КОНТАКТЕ?\n')

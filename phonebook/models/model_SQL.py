@@ -6,10 +6,12 @@ from sqlalchemy import Column, Integer, String, Date, Table, select
 import sqlalchemy as db
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import sqlite3
+import csv
 import os
 from gb_groupwork.phonebook import views
 from gb_groupwork.phonebook import view
-from gb_groupwork.phonebook.controller import DB_PATH, DB_SQL_NAME, DB_SQL_PATH_FULL
+from gb_groupwork.phonebook.controller import DB_PATH, DB_SQL_NAME, DB_SQL_PATH_FULL, ExportDB_SqlitetoTxt_PATH_FULL, ExpoptDB_SqlitetoCSV_PATH_FULL
 from gb_groupwork.phonebook.controllers import controller_cli
 
 
@@ -19,6 +21,8 @@ class SQL_model:
         # DB_PATH = '../../gb_groupwork/phonebook/DATA/'
         # self.DB_SQL_PATH_FULL = DB_PATH + DB_SQL_NAME + '.sqlite'
         self.DB_SQL_PATH_FULL = DB_SQL_PATH_FULL
+        self.ExportDB_SqlitetoTxt_PATH_FULL = ExportDB_SqlitetoTxt_PATH_FULL
+        self.ExpoptDB_SqlitetoCSV_PATH_FULL = ExpoptDB_SqlitetoCSV_PATH_FULL
         self.engine = db.create_engine('sqlite:///' + self.DB_SQL_PATH_FULL, echo=False)
 
         self.connection = self.engine.connect()
@@ -155,7 +159,8 @@ class SQL_model:
                 view.showInfo('white', f'{result}')
 
     def get_FoundContact(self):
-        field = view.inputStr('Введите параметр поиска контакта: ')
+        field = view.inputStr('Введите ключевое слово для поиска контакта: ')
+        view.showInfo('white', 'НАЙДЕНЫ КОНТАКТЫ: ')
         id = self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).all()
         first_name = self.session.query(self.PhoneBook).filter(self.PhoneBook.first_name == field).all()
         last_name = self.session.query(self.PhoneBook).filter(self.PhoneBook.last_name == field).all()
@@ -286,8 +291,24 @@ class SQL_model:
                     view.showInfo('blue', f'Вы отменили удаление контакта с ID "{field}"')
 
                 # self.connection.close()
+    def Export_SQLtoCSV(self):
+        conn = sqlite3.connect(self.DB_SQL_PATH_FULL)
+        cursor = conn.cursor()
+        cursor.execute('select * from PhoneBook')
+        with open(self.ExpoptDB_SqlitetoCSV_PATH_FULL, 'w', newline='') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow([i[0] for i in cursor.description])
+            csv_writer.writerows(cursor)
+        conn.close()
+        view.showInfo('green', f'Экспорт в {ExpoptDB_SqlitetoCSV_PATH_FULL} успешно завершен!')
 
+    def Export_toTxt(self):
+        view.showInfo('red', 'Недоступно для SQL. Выберите другую базу для экспорта!')
+        pass
 
+    def Export_CSVtoSQL(self):
+        view.showInfo('red', 'Недоступно для SQL. Выберите другую базу для экспорта!')
+        pass
 
     def setExport_SQL_to_CSV(self):
         pass

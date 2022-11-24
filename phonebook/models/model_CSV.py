@@ -1,14 +1,16 @@
 # ['id', 'first_name', 'last_name', 'patronymic', 'birt#hday', 'phone_person', 'phone_work', 'email', 'group', 'city'])
 import csv
-from gb_groupwork.phonebook import view
-from gb_groupwork.phonebook.controller import DB_PATH, DB_CSV_NAME, DB_CSV_PATH_FULL
 import os
 
+from gb_groupwork.phonebook import view
+from gb_groupwork.phonebook.controller import ExpoptDB_CSV_NAME, DB_CSV_PATH_FULL, ExportDB_CSV_PATH_FULL, ExpoptDB_CSVtoSqlite_PATH_FULL
 
 
 class CSV_model:
     def __init__(self):
         self.DB_CSV_PATH_FULL = DB_CSV_PATH_FULL
+        self.ExportDB_CSV_PATH_FULL = ExportDB_CSV_PATH_FULL
+        self.ExpoptDB_CSVtoSqlite_PATH_FULL = ExpoptDB_CSVtoSqlite_PATH_FULL
 
     def checkDB(self):
         if os.path.exists(self.DB_CSV_PATH_FULL) == True:
@@ -58,7 +60,7 @@ class CSV_model:
         with open(self.DB_CSV_PATH_FULL, 'r', encoding='UTF8', newline='') as f:
             reader = csv.reader(f)
             for row in reader:
-                view.showInfo('white', ' '.join(row))
+                print(' '.join(row))
 
 
     def get_FoundContact(self):
@@ -77,17 +79,53 @@ class CSV_model:
     def get_DeleteContact(self):
         self.show_PhoneBook_all()
         view.inputStr('РЕЖИМ УДАЛЕНИЯ КОНТАКТА')
-        field = view.inputStr('Введите ID контакта: ')
+        field = view.inputStr('Введите ID контакта для удаления: ')
         with open(self.DB_CSV_PATH_FULL, 'r+', encoding='UTF8', newline='') as in_file:
             reader = csv.reader(in_file)
             rows = [row for row in csv.reader(in_file) if field not in row]
+            if field == self.show_CSV_Column:
+                view.showInfo('red', f'Контакт с ID "{field}" не найден!')
+            else:
+                view.showInfo('green', f'Выбранный контакт с ID "{field}" удалён!')
             in_file.seek(0)
             in_file.truncate()
             writer = csv.writer(in_file)
             writer.writerows(rows)
-            view.showInfo('green', f'Выбранный контакт с ID "{field}" удалён!')
+
+
+
+    # def get_DeleteContact(self):
+    #     self.show_PhoneBook_all()
+    #     view.inputStr('РЕЖИМ УДАЛЕНИЯ КОНТАКТА')
+    #     field = view.inputStr('Введите ID контакта для удаления: ')
+    #     with open(self.DB_CSV_PATH_FULL, 'r+', encoding='UTF8', newline='') as in_file:
+    #         reader = csv.reader(in_file)
+    #         rows = [row for row in csv.reader(in_file) if field not in row]
+    #         in_file.seek(0)
+    #         in_file.truncate()
+    #         writer = csv.writer(in_file)
+    #         writer.writerows(rows)
+    #         view.showInfo('green', f'Выбранный контакт с ID "{field}" удалён!')
 
     def set_WriteFile(self, fields):
         with open(self.DB_CSV_PATH_FULL, 'a', encoding='UTF8', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(fields)
+
+
+    def Export_toTxt(self):
+        with open(self.DB_CSV_PATH_FULL, 'r', encoding='UTF8', newline='') as f_in, open(self.ExportDB_CSV_PATH_FULL, 'w', encoding='UTF8', newline='') as f_out:
+            content = f_in.read()
+            f_out.write(content)
+            view.showInfo('green', f'Экспорт в {self.ExportDB_CSV_PATH_FULL} успешно завершен!')
+
+
+    def Export_CSVtoSQL(self):
+        with open(self.DB_CSV_PATH_FULL, 'r', encoding='UTF8', newline='') as f_in, open(self.ExpoptDB_CSVtoSqlite_PATH_FULL, 'w', encoding='UTF8', newline='') as f_out:
+            content = f_in.read()
+            f_out.write(content)
+            view.showInfo('green', f'Экспорт в {self.ExpoptDB_CSVtoSqlite_PATH_FULL} успешно завершен!')
+
+    def Export_SQLtoCSV(self):
+        view.showInfo('red', 'Недоступно для CSV. Выберите другую базу для экспорта!')
+        pass
