@@ -295,7 +295,7 @@ class SQL_model:
         conn = sqlite3.connect(self.DB_SQL_PATH_FULL)
         cursor = conn.cursor()
         cursor.execute('select * from PhoneBook')
-        with open(self.ExpoptDB_SqlitetoCSV_PATH_FULL, 'w', newline='') as csv_file:
+        with open(self.DB_SQL_PATH_FULL+'test', 'w', newline='', encoding='UTF-8') as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow([i[0] for i in cursor.description])
             csv_writer.writerows(cursor)
