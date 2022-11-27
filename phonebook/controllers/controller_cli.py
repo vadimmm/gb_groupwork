@@ -60,6 +60,7 @@ class CLI_PhoneBook:
             5: self.menuSelectExportDbType,
             0: self.menuSelectDbType,
         }
+        os.system('cls')
         view.showInfo('invert', '\nВыберите действие в адресной книге:\n\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
@@ -72,7 +73,6 @@ class CLI_PhoneBook:
 
 
     def menuEditContact(self):
-
         actionMenu = {
             1: 'Добавить запись',
             2: 'Удалить запись',
@@ -83,6 +83,7 @@ class CLI_PhoneBook:
             2: self.DB_TYPE.get_DeleteContact,
             0: self.menuSelectAction,
         }
+        os.system('cls')
         view.showInfo('invert', '\nДействие c контактом:\n\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
@@ -108,6 +109,7 @@ class CLI_PhoneBook:
             4: view.bamper,
             0: view.bamper,
         }
+        os.system('cls')
         view.showInfo('invert', '\nВыберите группу для контакта:\n\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
@@ -131,6 +133,7 @@ class CLI_PhoneBook:
             3: self.DB_TYPE.Export_SQLtoCSV,
             0: self.menuSelectAction,
         }
+        os.system('cls')
         view.showInfo('invert', '\nВыберите базу данных для экспорта:\n\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
