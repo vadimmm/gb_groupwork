@@ -9,17 +9,12 @@ from sqlalchemy.orm import sessionmaker
 import sqlite3
 import csv
 import os
-from gb_groupwork.phonebook import views
 from gb_groupwork.phonebook import view
-from gb_groupwork.phonebook.controller import DB_PATH, DB_SQL_NAME, DB_SQL_PATH_FULL, ExportDB_SqlitetoTxt_PATH_FULL, ExpoptDB_SqlitetoCSV_PATH_FULL
-from gb_groupwork.phonebook.controllers import controller_cli
+from gb_groupwork.phonebook.controller import DB_SQL_PATH_FULL, ExportDB_SqlitetoTxt_PATH_FULL, ExpoptDB_SqlitetoCSV_PATH_FULL
 
 
 class SQL_model:
     def __init__(self):
-        # DB_NAME = 'sqlite'
-        # DB_PATH = '../../gb_groupwork/phonebook/DATA/'
-        # self.DB_SQL_PATH_FULL = DB_PATH + DB_SQL_NAME + '.sqlite'
         self.DB_SQL_PATH_FULL = DB_SQL_PATH_FULL
         self.ExportDB_SqlitetoTxt_PATH_FULL = ExportDB_SqlitetoTxt_PATH_FULL
         self.ExpoptDB_SqlitetoCSV_PATH_FULL = ExpoptDB_SqlitetoCSV_PATH_FULL
