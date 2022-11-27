@@ -179,84 +179,35 @@ class SQL_model:
 
     def set_NewContact(self):
         view.showInfo('invert', '\nрежим добавления нового контакта\n\n'.upper())
-        view.bamper()
-        # get_first_name = view.inputStr('Введите имя контакта: ')
-        # get_last_name = view.inputStr('Введите фамилию контакта: ')
-        # get_patronymic = view.inputStr('Введите отчество контакта: ')
-        # get_birthday = view.inputStr('Введите дату ДР контакта: ')
-        # get_phone_person = view.inputStr('Введите мобильный телефон контакта: ')
-        # get_phone_work = view.inputStr('Введите рабочий телефон контакта: ')
-        # get_email = view.inputStr('Введите email контакта: ')
-        # get_group = view.inputStr('Введите группу контакта: ')
-        # get_city = view.inputStr('Введите город контакта: ')
+        # view.bamper()
 
-        # with self.engine.connect() as conn:
-        #     result = conn.execute(insert(self.table_phonebook),
-        #         [
-        #             {
-        #                 'first_name': get_first_name,
-        #                 'last_name': get_last_name,
-        #                 'patronymic': get_patronymic,
-        #                 'birthday': get_birthday,
-        #                 'phone_person': get_phone_person,
-        #                 'phone_work': get_phone_work,
-        #                 'email': get_email,
-        #                 'group': get_group,
-        #                 'city': get_city,
-        #             },
-        #         ],
-        #     )
-        #     conn.commit()
+        get_first_name = view.inputStr('Введите имя контакта: ')
+        get_last_name = view.inputStr('Введите фамилию контакта: ')
+        get_patronymic = view.inputStr('Введите отчество контакта: ')
+        get_birthday = view.inputStr('Введите дату ДР контакта: ')
+        get_phone_person = view.inputStr('Введите мобильный телефон контакта: ')
+        get_phone_work = view.inputStr('Введите рабочий телефон контакта: ')
+        get_email = view.inputStr('Введите email контакта: ')
+        get_group = view.inputStr('Введите группу контакта: ')
+        get_city = view.inputStr('Введите город контакта: ')
 
-        # self.connection.execute(self.PhoneBook.insert(),
-        #     [
-        #        {
-        #          'first_name': get_first_name,
-        #          'last_name': get_last_name,
-        #          'patronymic': get_patronymic,
-        #          'birthday': get_birthday,
-        #          'phone_person': get_phone_person,
-        #          'phone_work': get_phone_work,
-        #          'email': get_email,
-        #          'group': get_group,
-        #          'city': get_city,
-        #         },
-        #     ]
-        # )
-
-        # with self.engine.connect() as conn:
-        #     ins = self.table_phonebook.insert().values(
-        #         first_name=get_first_name,
-        #         last_name=get_last_name,
-        #         patronymic=get_patronymic,
-        #         birthday=get_birthday,
-        #         phone_person=get_phone_person,
-        #         phone_work=get_phone_work,
-        #         email=get_email,
-        #         group=get_group,
-        #         city=get_city,
-        #     )
-
-            # result = conn.execute(ins)
-
-            # result = conn.execute(
-            #     self.insert(self.table_phonebook),
-            #     [
-            #         {'first_name': get_first_name,
-            #          'last_name': get_last_name,
-            #          'patronymic': get_patronymic,
-            #          'birthday': get_birthday,
-            #          'phone_person': get_phone_person,
-            #          'phone_work': get_phone_work,
-            #          'email': get_email,
-            #          'group': get_group,
-            #          'city': get_city,
-            #          },
-            #     ],
-            # )
-            # # result.commit()
-            # self.connection.close()
-
+        with self.engine.connect() as conn:
+            result = conn.execute(
+                insert(self.PhoneBook),
+                [
+                    {
+                        'first_name': get_first_name,
+                        'last_name': get_last_name,
+                        'patronymic': get_patronymic,
+                        'birthday': get_birthday,
+                        'phone_person': get_phone_person,
+                        'phone_work': get_phone_work,
+                        'email': get_email,
+                        'group': get_group,
+                        'city': get_city,
+                     },
+                ],
+            )
 
     def get_ShowContactBy_id(self):
         field = view.inputStr('Введите ID контакта: ')
@@ -315,52 +266,3 @@ class SQL_model:
 
     def setImport_CSV_toSQL(self):
         pass
-
-    # input('Enter для выхода')
-
-    # with engine.connect() as conn:
-    #     result = conn.execute(
-    #         insert(table_phonebook),
-    #         [
-    #             {'first_name': 'Именной',
-    #              'last_name': 'Фимилиев',
-    #              'patronymic': 'Отчество',
-    #              # 'birthday': '22.11.1999',
-    #              'phone_person': '123456789',
-    #              'phone_work': '0987654321',
-    #              'email': 'mail@email.em',
-    #              # 'group': 'Группа',
-    #              'city': 'Славный город',
-    #              },
-    #             {'first_name': 'Иван',
-    #              'last_name': 'Иванов',
-    #              'patronymic': 'Иванович',
-    #              # 'birthday': '21-10-1949',
-    #              'phone_person': '1465456789',
-    #              'phone_work': '0987457321',
-    #              'email': 'mail@mail.em',
-    #              # 'group': 'Группа 2',
-    #              'city': 'Южный',
-    #              },
-    #             {'first_name': 'Пётр',
-    #              'last_name': 'Петров',
-    #              'patronymic': 'Петрович',
-    #              # 'birthday': '1929.12.01',
-    #              'phone_person': '1798745349',
-    #              'phone_work': '7790797834',
-    #              'email': 'mail@email.org',
-    #              # 'group': 'Группа 2',
-    #              'city': 'Северный',
-    #              },
-    #         ],
-    #     )
-    #     connection.close()
-
-
-    # stmt = insert(table_phonebook).values(first_name="Именной", last_name="Фимилиев", phone_person='123456789')
-    # with engine.connect() as conn:
-    #     result = connection.execute(stmt)
-    #     connection.close()
-    #
-    # compiled = stmt.compile()
-    # compiled.params()
