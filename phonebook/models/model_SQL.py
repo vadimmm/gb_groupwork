@@ -179,8 +179,6 @@ class SQL_model:
 
     def set_NewContact(self):
         view.showInfo('invert', '\nрежим добавления нового контакта\n\n'.upper())
-        # view.bamper()
-
         get_first_name = view.inputStr('Введите имя контакта: ')
         get_last_name = view.inputStr('Введите фамилию контакта: ')
         get_patronymic = view.inputStr('Введите отчество контакта: ')
