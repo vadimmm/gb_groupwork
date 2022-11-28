@@ -143,3 +143,26 @@ class CLI_PhoneBook:
         else:
             view.showInfo('red', f'Вы сделали недопустимый выбор {choice}. Попробуйте снова!')
             self.menuSelectExportDbType()
+
+
+    def menuEditJobTitle(self):
+        actionMenu = {
+            1: 'Преподаватель',
+            2: 'Студент',
+            0: 'ВЕРНУТЬСЯ НАЗАД',
+        }
+        action = {
+            1: view.bamper,
+            2: view.bamper,
+            0: view.bamper,
+        }
+        os.system('cls')
+        view.showInfo('invert', '\nВыберите группу для контакта:\n\n'.upper())
+        self.getPrintDict(actionMenu)
+        choice = view.inputInt('Выберите пункт меню: ')
+        run = action.get(choice)
+        if run:
+            run()
+        else:
+            view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
+            self.menuEditGroupField()
