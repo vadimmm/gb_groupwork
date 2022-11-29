@@ -16,6 +16,9 @@ class CLI_PhoneBook:
         menu = ''.join(f'{key} - {value}\n' for key, value in dictName.items())
         view.showInfo('white', f'{menu}')
 
+    def getObj(self, mydict, key):
+        return mydict[key]
+
     def menuSelectDbType(self):
         actionMenu = {
             1: 'Использовать базу на CSV',
@@ -99,27 +102,26 @@ class CLI_PhoneBook:
             1: 'Семья',
             2: 'Друзья',
             3: 'Работа',
-            4: 'Другие',
-            0: 'ВЕРНУТЬСЯ НАЗАД',
+            4: 'Другие'
         }
         action = {
-            1: view.bamper,
-            2: view.bamper,
-            3: view.bamper,
-            4: view.bamper,
-            0: view.bamper,
+            1: self.getObj(actionMenu, 1),
+            2: self.getObj(actionMenu, 2),
+            3: self.getObj(actionMenu, 3),
+            4: self.getObj(actionMenu, 4),
         }
-        os.system('cls')
         view.showInfo('invert', '\nВыберите группу для контакта:\n\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
-        run = action.get(choice)
-        if run:
-            run()
+        value_selected = action.get(choice)
+        if value_selected:
+            view.showInfo('white', f'Выбрана группа "{value_selected}"')
+            #     time.sleep(3)
+            return value_selected
         else:
-            view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
+            view.showInfo('red', f'Вы сделали не допустимый выбор "{choice}". Попробуйте снова!')
             self.menuEditGroupField()
-
+        
     def menuSelectExportDbType(self):
         actionMenu = {
             1: 'Экспорт в .txt (только для CSV)',

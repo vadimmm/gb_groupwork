@@ -4,6 +4,7 @@ import os
 
 from gb_groupwork.phonebook import view
 from gb_groupwork.phonebook.controller import ExpoptDB_CSV_NAME, DB_CSV_PATH_FULL, ExportDB_CSV_PATH_FULL, ExpoptDB_CSVtoSqlite_PATH_FULL
+from gb_groupwork.phonebook.controllers import controller_cli
 
 
 class CSV_model:
@@ -24,8 +25,12 @@ class CSV_model:
         some_header = ['id', 'first_name', 'last_name', 'patronymic', 'phone_person', 'phone_work', 'email', 'group', 'city']
         some_data = []
         for i in some_header:
-            j = input(f'Введите {i}: ')
-            some_data.append(j)
+            if i == 'group':
+                j = controller_cli.CLI_PhoneBook().menuEditGroupField()
+                some_data.append(j)
+            else:
+                j = input(f'Введите {i}: ')
+                some_data.append(j)
             if len(some_data) == len(some_header):
                 break
         return some_data
