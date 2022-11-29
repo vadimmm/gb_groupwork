@@ -11,7 +11,11 @@ import os
 
 import gb_groupwork.phonebook.controllers.controller_cli
 from gb_groupwork.phonebook import view
-from gb_groupwork.phonebook.controller import DB_SQL_PATH_FULL, ExportDB_SqlitetoTxt_PATH_FULL, ExpoptDB_SqlitetoCSV_PATH_FULL
+from gb_groupwork.phonebook.controller import DB_SQL_PATH_FULL, ExportDB_SqlitetoTxt_PATH_FULL, \
+    ExpoptDB_SqlitetoCSV_PATH_FULL
+from gb_groupwork.phonebook.controllers import controller_cli
+
+
 # from gb_groupwork.phonebook.controllers.controller_cli import CLI_PhoneBook as cli
 
 class SQL_model:
@@ -25,14 +29,15 @@ class SQL_model:
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
         self.metadata = db.MetaData()
+
     def set_SQL_CreateDB(self):
 
-        GROUP_CHOICES = (
-                ('БЕЗ ГРУППЫ', 'БЕЗ ГРУППЫ'),
-                ('Семья', 'Семья'),
-                ('Работа', 'Работа'),
-                ('Друзья', 'Друзья'),
-            ),
+        # GROUP_CHOICES = (
+        #         ('БЕЗ ГРУППЫ', 'БЕЗ ГРУППЫ'),
+        #         ('Семья', 'Семья'),
+        #         ('Работа', 'Работа'),
+        #         ('Друзья', 'Друзья'),
+        #     ),
 
         self.table_phonebook = Table(
             'PhoneBook', self.metadata,
@@ -44,9 +49,9 @@ class SQL_model:
             Column('phone_person', String(12), nullable=False),
             Column('phone_work', String(12), nullable=True),
             Column('email', String, nullable=True),
-            Column('title', String, nullable=True),
-            Column('group', choices=GROUP_CHOICES, default='БЕЗ ГРУППЫ'),
-            # Column('group', String, nullable=True),
+            Column('jobTitle', String(50), nullable=True),
+            # Column('group', choices=GROUP_CHOICES, default='БЕЗ ГРУППЫ'),
+            Column('group', String, nullable=True),
             Column('city', String, nullable=True),
         )
 
@@ -58,7 +63,6 @@ class SQL_model:
         else:
             view.showInfo('blue', 'Файл БД НЕ НАЙДЕН, БУДЕТ СОЗДАНА БД')
             self.set_SQL_CreateDB()
-
 
     Base = declarative_base()
 
@@ -72,7 +76,7 @@ class SQL_model:
         phone_person = Column(String(12), nullable=False)
         phone_work = Column(String(12), nullable=True)
         email = Column(String, nullable=True)
-        title = Column(String, nullable=True)
+        jobTitle = Column(String, nullable=True)
         # group = Column(String, choise=self.GROUP_CHOICES, default='БЕЗ ГРУППЫ', nullable=True)
         group = Column(String, nullable=True)
         city = Column(String, nullable=True)
@@ -86,10 +90,9 @@ class SQL_model:
                    f'{self.phone_person} ' \
                    f'{self.phone_work} ' \
                    f'{self.email} ' \
-                   f'{self.title} ' \
+                   f'{self.jobTitle} ' \
                    f'{self.group} ' \
                    f'{self.city} '
-
 
     def show_SQL_Column(self):
         with self.connection as conn:
@@ -103,13 +106,12 @@ class SQL_model:
                     self.PhoneBook.phone_person,
                     self.PhoneBook.phone_work,
                     self.PhoneBook.email,
-                    self.PhoneBook.title,
+                    self.PhoneBook.jobTitle,
                     self.PhoneBook.group,
                     self.PhoneBook.city
                 ]
             ))
         view.showInfo('white', f'{result._metadata.keys}')
-
 
     def show_PhoneBook_all(self):
         view.showInfo('white', 'СПИСОК КОНТАКТОВ: ')
@@ -118,44 +120,6 @@ class SQL_model:
         for result in responses:
             view.showInfo('white', f'{result}')
 
-
-    # def get_FoundContactBy_id(self):
-    #     field = view.inputInt('Введите ID контакта: ')
-    #     responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).all()
-    #     if responses == []:
-    #         view.inputStr(f'Контакт с ID "{field}" не найден')
-    #     else:
-    #         for result in responses:
-    #             view.showInfo('white', f'{result}')
-
-    # def get_FoundContactBy_first_name(self):
-    #     field = view.inputStr('Введите имя контакта: ').title()
-    #     responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.first_name == field).all()
-    #     if responses == []:
-    #         view.inputStr(f'Контакт с именем "{field}" не найден')
-    #     else:
-    #         for result in responses:
-    #             view.showInfo('white', f'{result}')
-
-
-    # def get_FoundContactBy_last_name(self):
-    #     field = view.inputStr('Введите фамилию контакта: ').upper()
-    #     responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.last_name == field).all()
-    #     if responses == []:
-    #         view.inputStr(f'Контакт с фамилией "{field}" не найден')
-    #     else:
-    #         for result in responses:
-    #             view.showInfo('white', f'{result}')
-
-
-    # def get_FoundContactBy_phone_person(self):
-    #     field = view.inputStr('Введите номер телефона: ')
-    #     responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.phone_person == field).all()
-    #     if responses == []:
-    #         view.inputStr(f'Контакт с таким номером "{field}" не найден')
-    #     else:
-    #         for result in responses:
-    #             view.showInfo('white', f'{result}')
 
     def get_FoundContact(self):
         field = view.inputStr('Введите ключевое слово для поиска контакта: ')
@@ -176,9 +140,6 @@ class SQL_model:
             for result in responses:
                 view.showInfo('white', f'{result}')
 
-
-
-
     def set_NewContact(self):
         view.showInfo('invert', '\nрежим добавления нового контакта\n\n'.upper())
         get_first_name = view.inputStr('Введите имя контакта: ')
@@ -188,27 +149,27 @@ class SQL_model:
         get_phone_person = view.inputStr('Введите мобильный телефон контакта: ')
         get_phone_work = view.inputStr('Введите рабочий телефон контакта: ')
         get_email = view.inputStr('Введите email контакта: ')
-        get_title = gb_groupwork.phonebook.controllers.controller_cli.CLI_PhoneBook.menuEditJobTitle()
-        get_group = view.inputStr('Введите группу контакта: ')
+        get_jobTitle = controller_cli.CLI_PhoneBook().menuEditJobTitleField()
+        get_group = controller_cli.CLI_PhoneBook().menuEditGroupField()
         get_city = view.inputStr('Введите город контакта: ')
 
         with self.engine.connect() as conn:
             result = conn.execute(insert(self.PhoneBook),
-                [
-                    {
-                        'first_name': get_first_name,
-                        'last_name': get_last_name,
-                        'patronymic': get_patronymic,
-                        'birthday': get_birthday,
-                        'phone_person': get_phone_person,
-                        'phone_work': get_phone_work,
-                        'email': get_email,
-                        'title': get_title,
-                        'group': get_group,
-                        'city': get_city,
-                     },
-                ],
-            )
+                                  [
+                                      {
+                                          'first_name': get_first_name,
+                                          'last_name': get_last_name,
+                                          'patronymic': get_patronymic,
+                                          'birthday': get_birthday,
+                                          'phone_person': get_phone_person,
+                                          'phone_work': get_phone_work,
+                                          'email': get_email,
+                                          'jobTitle': get_jobTitle,
+                                          'group': get_group,
+                                          'city': get_city,
+                                      },
+                                  ],
+                                  )
 
     def get_ShowContactBy_id(self):
         field = view.inputStr('Введите ID контакта: ')
@@ -218,7 +179,6 @@ class SQL_model:
         else:
             for result in responses:
                 view.showInfo('white', f'{result.first_name}')
-
 
     def get_DeleteContact(self):
         # self.show_PhoneBook_all()
@@ -243,11 +203,12 @@ class SQL_model:
                     view.showInfo('blue', f'Вы отменили удаление контакта с ID "{field}"')
 
                 # self.connection.close()
+
     def Export_SQLtoCSV(self):
         conn = sqlite3.connect(self.DB_SQL_PATH_FULL)
         cursor = conn.cursor()
         cursor.execute('select * from PhoneBook')
-        with open(self.DB_SQL_PATH_FULL+'test', 'w', newline='', encoding='UTF-8') as csv_file:
+        with open(self.DB_SQL_PATH_FULL + 'test', 'w', newline='', encoding='UTF-8') as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow([i[0] for i in cursor.description])
             csv_writer.writerows(cursor)

@@ -36,7 +36,6 @@ class CSV_model:
         return some_data
 
 
-
     def set_NewContact(self):
         data = self.getReadyDict()
         self.set_WriteFile(data)

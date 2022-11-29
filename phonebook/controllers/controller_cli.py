@@ -4,13 +4,13 @@ from gb_groupwork.phonebook import controller
 from gb_groupwork.phonebook.models import model_CSV as CSV
 from gb_groupwork.phonebook.models import model_SQL as SQL
 
+
 class CLI_PhoneBook:
     def __init__(self):
         self.main = 'CLI'
 
     def init(self):
         self.menuSelectDbType()
-
 
     def getPrintDict(self, dictName):
         menu = ''.join(f'{key} - {value}\n' for key, value in dictName.items())
@@ -45,7 +45,6 @@ class CLI_PhoneBook:
             view.showInfo('red', f'Вы сделали недопустимый выбор {choice}. Попробуйте снова!')
             self.menuSelectDbType()
 
-
     def menuSelectAction(self):
         actionMenu = {
             1: 'Отобразить все данные',
@@ -73,7 +72,6 @@ class CLI_PhoneBook:
         else:
             view.showInfo('red', f'Недопустимый выбор {choice}! Попробуйте снова!')
             self.menuSelectAction()
-
 
     def menuEditContact(self):
         actionMenu = {
@@ -110,7 +108,7 @@ class CLI_PhoneBook:
             3: self.getObj(actionMenu, 3),
             4: self.getObj(actionMenu, 4),
         }
-        view.showInfo('invert', '\nВыберите группу для контакта:\n\n'.upper())
+        view.showInfo('blue', 'Выберите группу для контакта:\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
         value_selected = action.get(choice)
@@ -121,7 +119,7 @@ class CLI_PhoneBook:
         else:
             view.showInfo('red', f'Вы сделали не допустимый выбор "{choice}". Попробуйте снова!')
             self.menuEditGroupField()
-        
+
     def menuSelectExportDbType(self):
         actionMenu = {
             1: 'Экспорт в .txt (только для CSV)',
@@ -146,27 +144,24 @@ class CLI_PhoneBook:
             view.showInfo('red', f'Вы сделали недопустимый выбор {choice}. Попробуйте снова!')
             self.menuSelectExportDbType()
 
-
-    def menuEditJobTitle(self):
+    def menuEditJobTitleField(self):
         actionMenu = {
             1: 'Преподаватель',
             2: 'Студент',
             3: 'Оставить пустым',
-            0: 'ВЕРНУТЬСЯ НАЗАД',
         }
         action = {
-            1: view.bamper,
-            2: view.bamper,
-            3: 'Не выбрано',
-            0: view.bamper,
+            1: self.getObj(actionMenu, 1),
+            2: self.getObj(actionMenu, 2),
+            3: self.getObj(actionMenu, 3),
         }
         os.system('cls')
-        view.showInfo('invert', '\nВыберите группу для контакта:\n\n'.upper())
+        view.showInfo('blue', 'Выберите группу для контакта:\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
-        run = action.get(choice)
-        if run:
-            run()
+        value_selected = action.get(choice)
+        if value_selected:
+            return value_selected
         else:
             view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
             self.menuEditGroupField()
