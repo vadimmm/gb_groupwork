@@ -149,11 +149,13 @@ class CLI_PhoneBook:
         actionMenu = {
             1: 'Преподаватель',
             2: 'Студент',
+            3: 'Оставить пустым',
             0: 'ВЕРНУТЬСЯ НАЗАД',
         }
         action = {
             1: view.bamper,
             2: view.bamper,
+            3: 'Не выбрано',
             0: view.bamper,
         }
         os.system('cls')

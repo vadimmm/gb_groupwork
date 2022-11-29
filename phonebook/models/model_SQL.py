@@ -1,7 +1,6 @@
 import json
 
 from sqlalchemy.dialects.sqlite import insert
-from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy import Column, Integer, String, Date, Table, select
 import sqlalchemy as db
 from sqlalchemy.ext.declarative import declarative_base
@@ -9,9 +8,11 @@ from sqlalchemy.orm import sessionmaker
 import sqlite3
 import csv
 import os
+
+import gb_groupwork.phonebook.controllers.controller_cli
 from gb_groupwork.phonebook import view
 from gb_groupwork.phonebook.controller import DB_SQL_PATH_FULL, ExportDB_SqlitetoTxt_PATH_FULL, ExpoptDB_SqlitetoCSV_PATH_FULL
-
+# from gb_groupwork.phonebook.controllers.controller_cli import CLI_PhoneBook as cli
 
 class SQL_model:
     def __init__(self):
@@ -26,12 +27,12 @@ class SQL_model:
         self.metadata = db.MetaData()
     def set_SQL_CreateDB(self):
 
-        # GROUP_CHOICES = (
-        #         ('БЕЗ ГРУППЫ', 'БЕЗ ГРУППЫ'),
-        #         ('Семья', 'Семья'),
-        #         ('Работа', 'Работа'),
-        #         ('Друзья', 'Друзья'),
-        #     ),
+        GROUP_CHOICES = (
+                ('БЕЗ ГРУППЫ', 'БЕЗ ГРУППЫ'),
+                ('Семья', 'Семья'),
+                ('Работа', 'Работа'),
+                ('Друзья', 'Друзья'),
+            ),
 
         self.table_phonebook = Table(
             'PhoneBook', self.metadata,
@@ -43,8 +44,9 @@ class SQL_model:
             Column('phone_person', String(12), nullable=False),
             Column('phone_work', String(12), nullable=True),
             Column('email', String, nullable=True),
-            # Column('group', choices=GROUP_CHOICES, default='БЕЗ ГРУППЫ'),
-            Column('group', String, nullable=True),
+            Column('title', String, nullable=True),
+            Column('group', choices=GROUP_CHOICES, default='БЕЗ ГРУППЫ'),
+            # Column('group', String, nullable=True),
             Column('city', String, nullable=True),
         )
 
@@ -70,7 +72,8 @@ class SQL_model:
         phone_person = Column(String(12), nullable=False)
         phone_work = Column(String(12), nullable=True)
         email = Column(String, nullable=True)
-        # group = Column(String, choise=GROUP_CHOICES, default='БЕЗ ГРУППЫ', nullable=True)
+        title = Column(String, nullable=True)
+        # group = Column(String, choise=self.GROUP_CHOICES, default='БЕЗ ГРУППЫ', nullable=True)
         group = Column(String, nullable=True)
         city = Column(String, nullable=True)
 
@@ -83,6 +86,7 @@ class SQL_model:
                    f'{self.phone_person} ' \
                    f'{self.phone_work} ' \
                    f'{self.email} ' \
+                   f'{self.title} ' \
                    f'{self.group} ' \
                    f'{self.city} '
 
@@ -99,11 +103,11 @@ class SQL_model:
                     self.PhoneBook.phone_person,
                     self.PhoneBook.phone_work,
                     self.PhoneBook.email,
+                    self.PhoneBook.title,
                     self.PhoneBook.group,
                     self.PhoneBook.city
                 ]
-            )
-            )
+            ))
         view.showInfo('white', f'{result._metadata.keys}')
 
 
@@ -115,43 +119,43 @@ class SQL_model:
             view.showInfo('white', f'{result}')
 
 
-    def get_FoundContactBy_id(self):
-        field = view.inputInt('Введите ID контакта: ')
-        responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).all()
-        if responses == []:
-            view.inputStr(f'Контакт с ID "{field}" не найден')
-        else:
-            for result in responses:
-                view.showInfo('white', f'{result}')
+    # def get_FoundContactBy_id(self):
+    #     field = view.inputInt('Введите ID контакта: ')
+    #     responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.id == field).all()
+    #     if responses == []:
+    #         view.inputStr(f'Контакт с ID "{field}" не найден')
+    #     else:
+    #         for result in responses:
+    #             view.showInfo('white', f'{result}')
 
-    def get_FoundContactBy_first_name(self):
-        field = view.inputStr('Введите имя контакта: ').title()
-        responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.first_name == field).all()
-        if responses == []:
-            view.inputStr(f'Контакт с именем "{field}" не найден')
-        else:
-            for result in responses:
-                view.showInfo('white', f'{result}')
-
-
-    def get_FoundContactBy_last_name(self):
-        field = view.inputStr('Введите фамилию контакта: ').upper()
-        responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.last_name == field).all()
-        if responses == []:
-            view.inputStr(f'Контакт с фамилией "{field}" не найден')
-        else:
-            for result in responses:
-                view.showInfo('white', f'{result}')
+    # def get_FoundContactBy_first_name(self):
+    #     field = view.inputStr('Введите имя контакта: ').title()
+    #     responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.first_name == field).all()
+    #     if responses == []:
+    #         view.inputStr(f'Контакт с именем "{field}" не найден')
+    #     else:
+    #         for result in responses:
+    #             view.showInfo('white', f'{result}')
 
 
-    def get_FoundContactBy_phone_person(self):
-        field = view.inputStr('Введите номер телефона: ')
-        responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.phone_person == field).all()
-        if responses == []:
-            view.inputStr(f'Контакт с таким номером "{field}" не найден')
-        else:
-            for result in responses:
-                view.showInfo('white', f'{result}')
+    # def get_FoundContactBy_last_name(self):
+    #     field = view.inputStr('Введите фамилию контакта: ').upper()
+    #     responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.last_name == field).all()
+    #     if responses == []:
+    #         view.inputStr(f'Контакт с фамилией "{field}" не найден')
+    #     else:
+    #         for result in responses:
+    #             view.showInfo('white', f'{result}')
+
+
+    # def get_FoundContactBy_phone_person(self):
+    #     field = view.inputStr('Введите номер телефона: ')
+    #     responses = self.session.query(self.PhoneBook).filter(self.PhoneBook.phone_person == field).all()
+    #     if responses == []:
+    #         view.inputStr(f'Контакт с таким номером "{field}" не найден')
+    #     else:
+    #         for result in responses:
+    #             view.showInfo('white', f'{result}')
 
     def get_FoundContact(self):
         field = view.inputStr('Введите ключевое слово для поиска контакта: ')
@@ -172,6 +176,9 @@ class SQL_model:
             for result in responses:
                 view.showInfo('white', f'{result}')
 
+
+
+
     def set_NewContact(self):
         view.showInfo('invert', '\nрежим добавления нового контакта\n\n'.upper())
         get_first_name = view.inputStr('Введите имя контакта: ')
@@ -181,12 +188,12 @@ class SQL_model:
         get_phone_person = view.inputStr('Введите мобильный телефон контакта: ')
         get_phone_work = view.inputStr('Введите рабочий телефон контакта: ')
         get_email = view.inputStr('Введите email контакта: ')
+        get_title = gb_groupwork.phonebook.controllers.controller_cli.CLI_PhoneBook.menuEditJobTitle()
         get_group = view.inputStr('Введите группу контакта: ')
         get_city = view.inputStr('Введите город контакта: ')
 
         with self.engine.connect() as conn:
-            result = conn.execute(
-                insert(self.PhoneBook),
+            result = conn.execute(insert(self.PhoneBook),
                 [
                     {
                         'first_name': get_first_name,
@@ -196,6 +203,7 @@ class SQL_model:
                         'phone_person': get_phone_person,
                         'phone_work': get_phone_work,
                         'email': get_email,
+                        'title': get_title,
                         'group': get_group,
                         'city': get_city,
                      },

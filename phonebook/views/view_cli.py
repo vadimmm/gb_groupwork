@@ -1,18 +1,6 @@
 from gb_groupwork.phonebook import views
+from gb_groupwork.phonebook import view
+def setTitleContact():
 
-
-class People:
-
-    def __init__(self, name):
-        self._name = name
-
-    def getName(self):
-        return self._name
-
-
-    def setName(self, name):
-        self._name = name
-
-
-
+    pass
 
