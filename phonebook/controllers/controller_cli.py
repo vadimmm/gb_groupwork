@@ -100,7 +100,7 @@ class CLI_PhoneBook:
             1: 'Семья',
             2: 'Друзья',
             3: 'Работа',
-            4: 'Другие'
+            4: 'Другие',
         }
         action = {
             1: self.getObj(actionMenu, 1),
@@ -114,7 +114,6 @@ class CLI_PhoneBook:
         value_selected = action.get(choice)
         if value_selected:
             view.showInfo('white', f'Выбрана группа "{value_selected}"')
-            #     time.sleep(3)
             return value_selected
         else:
             view.showInfo('red', f'Вы сделали не допустимый выбор "{choice}". Попробуйте снова!')
@@ -161,6 +160,7 @@ class CLI_PhoneBook:
         choice = view.inputInt('Выберите пункт меню: ')
         value_selected = action.get(choice)
         if value_selected:
+            view.showInfo('white', f'Выбрано значение "{value_selected}"')
             return value_selected
         else:
             view.showInfo('red', f'Вы сделали не допустимый выбор {choice}. Попробуйте снова!')
