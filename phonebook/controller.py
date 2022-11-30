@@ -1,8 +1,20 @@
-import os
-
-import view
+from gb_groupwork.phonebook import view
 from gb_groupwork.phonebook.controllers import controller_cli
 
+
+def checkAdnInstallModule(module):
+    try:
+        import module
+        view.showInfo('green', f'Модуль {module} установлен!')
+    except ImportError:
+        import pip, os
+        view.showInfo('red', f'Модуль {module} не установлен!')
+        view.showInfo('blue', f'Сейчас всё исправлю!...')
+        pip.main(['install', module])
+        # os.system(f'pip install {module}')
+        # os.system(f'pip install {module} --upgrade')
+
+checkAdnInstallModule('SQLAlchemy')
 
 # from models import model_SQL
 # from models import model_CSV as model
