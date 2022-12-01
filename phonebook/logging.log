@@ -1,0 +1,12 @@
+2022-12-01 16:19:55: root - INFO - controller - init - Программа запущена
+2022-12-01 16:19:55: root - INFO - controller_cli - menuSelectDbType - Вызвано основное меню
+2022-12-01 16:19:55: root - DEBUG - controller_cli - menuSelectDbType - Окно отчищено
+2022-12-01 16:19:58: root - DEBUG - controller_cli - menuSelectDbType - Пользователь сделал выбор в меню: 2
+2022-12-01 16:19:58: root - DEBUG - controller_cli - menuSelectDbType - Пользователь сделал выбор рабочей базы: <gb_groupwork.phonebook.models.model_SQL.SQL_model object at 0x000002865E9EBD50>
+2022-12-01 16:19:58: root - INFO - controller_cli - menuSelectAction - Вызвано меню действий
+2022-12-01 16:19:58: root - DEBUG - controller_cli - menuSelectAction - Окно отчищено
+2022-12-01 16:20:00: root - INFO - model_SQL - set_NewContact - Вызвано действие создания нового контакта
+2022-12-01 16:20:21: root - INFO - controller_cli - menuEditJobTitleField - Вызвано окно дополнительного меню выбора должности
+2022-12-01 16:20:24: root - INFO - controller_cli - menuEditGroupField - Вызвано окно дополнительного меню выбора группы
+2022-12-01 16:20:40: root - INFO - model_SQL - set_NewContact - Добавлен новый контакт с данными: Карл, Карлов, Карлович, 123124, 7546346, sdfsdf@sfwef.tutut, Преподаватель, Киров
+2022-12-01 16:20:40: root - INFO - controller - init - Программа корректно остановлена
