@@ -1,5 +1,5 @@
 import json
-
+from gb_groupwork.phonebook.controller import log
 from sqlalchemy.dialects.sqlite import insert
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy import Column, Integer, String, Date, Table, select
@@ -44,6 +44,7 @@ class SQL_model:
         )
 
         self.metadata.create_all(self.engine)
+        log.debug('База данных успешно создана')
 
     def checkDB(self):
         if os.path.exists(self.DB_SQL_PATH_FULL) == True:
@@ -131,6 +132,7 @@ class SQL_model:
                 view.showInfo('white', f'{result}')
 
     def set_NewContact(self):
+        log.info('Вызвано действие создания нового контакта')
         view.showInfo('invert', '\nрежим добавления нового контакта\n\n'.upper())
         get_first_name = view.inputStr('Введите имя контакта: ')
         get_last_name = view.inputStr('Введите фамилию контакта: ')
@@ -162,6 +164,9 @@ class SQL_model:
                      },
                 ],
             )
+        log.info(f'Добавлен новый контакт с данными: {get_first_name}, {get_last_name}, {get_patronymic}, '
+                 f'{get_phone_person}, {get_phone_work}, {get_email}, {get_jobTitle}, {get_city}')
+
 
     def get_ShowContactBy_id(self):
         field = view.inputStr('Введите ID контакта: ')

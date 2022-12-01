@@ -1,6 +1,6 @@
 import os
 from gb_groupwork.phonebook import view
-from gb_groupwork.phonebook import controller
+from gb_groupwork.phonebook.controller import log
 from gb_groupwork.phonebook.models import model_CSV as CSV
 from gb_groupwork.phonebook.models import model_SQL as SQL
 
@@ -20,6 +20,7 @@ class CLI_PhoneBook:
         return mydict[key]
 
     def menuSelectDbType(self):
+        log.info('Вызвано основное меню')
         actionMenu = {
             1: 'Использовать базу на CSV',
             2: 'Использовать базу на SQL',
@@ -31,21 +32,26 @@ class CLI_PhoneBook:
             0: exit,
         }
         os.system('cls')
+        log.debug('Окно отчищено')
         view.showInfo('invert', f'\nВыберите базу данных для дальнейшей работы:\n\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
+        log.debug(f'Пользователь сделал выбор в меню: {choice}')
         if choice == 1:
             self.DB_TYPE = CSV.CSV_model()
         elif choice == 2:
             self.DB_TYPE = SQL.SQL_model()
+        log.debug(f'Пользователь сделал выбор рабочей базы: {self.DB_TYPE}')
         run = action.get(choice)
         if run:
             run()
         else:
             view.showInfo('red', f'Вы сделали недопустимый выбор {choice}. Попробуйте снова!')
+            log.info(f'Пользователь сделал верный выбор в меню: {choice}')
             self.menuSelectDbType()
 
     def menuSelectAction(self):
+        log.info('Вызвано меню действий')
         actionMenu = {
             1: 'Отобразить все данные',
             2: 'Найти запись в справочнике',
@@ -63,6 +69,7 @@ class CLI_PhoneBook:
             0: self.menuSelectDbType,
         }
         os.system('cls')
+        log.debug('Окно отчищено')
         view.showInfo('invert', '\nВыберите действие в адресной книге:\n\n'.upper())
         self.getPrintDict(actionMenu)
         choice = view.inputInt('Выберите пункт меню: ')
@@ -70,7 +77,8 @@ class CLI_PhoneBook:
         if run:
             run()
         else:
-            view.showInfo('red', f'Недопустимый выбор {choice}! Попробуйте снова!')
+            view.showInfo('red', f'Вы сделали недопустимый выбор {choice}. Попробуйте снова!')
+            log.info(f'Пользователь сделал верный выбор в меню: {choice}')
             self.menuSelectAction()
 
     def menuEditContact(self):
@@ -96,6 +104,7 @@ class CLI_PhoneBook:
             self.menuEditContact()
 
     def menuEditGroupField(self):
+        log.info('Вызвано окно дополнительного меню выбора группы')
         actionMenu = {
             1: 'Семья',
             2: 'Друзья',
@@ -141,9 +150,11 @@ class CLI_PhoneBook:
             run()
         else:
             view.showInfo('red', f'Вы сделали недопустимый выбор {choice}. Попробуйте снова!')
+            log.info(f'Пользователь сделал верный выбор в меню: {choice}')
             self.menuSelectExportDbType()
 
     def menuEditJobTitleField(self):
+        log.info('Вызвано окно дополнительного меню выбора должности')
         actionMenu = {
             1: 'Преподаватель',
             2: 'Студент',
